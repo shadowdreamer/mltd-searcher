@@ -6,7 +6,13 @@ module.exports = {
             ws: true,
             changeOrigin: true,
             pathRewrite: {'^/mltd' : ''}
-            }
+            },
+          '/my-mltd': {
+            target: 'https://mltd-api.dovahkiin.top/.netlify/functions/server',
+            ws: true,
+            changeOrigin: true,
+            pathRewrite: {'^/my-mltd' : ''}
+            },
         }
     },
     productionSourceMap:false,  

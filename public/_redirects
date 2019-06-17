@@ -1,2 +1,3 @@
 /mltd  https://api.matsurihi.me/mltd/v1 200
+/my-mltd   https://mltd-api.dovahkiin.top/.netlify/functions/server
 /*  /index.html 200
