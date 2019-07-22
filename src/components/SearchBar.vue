@@ -68,11 +68,11 @@ export default {
     items: [
       { header: "Select an option or create one" },
       {
-        text: "Foo",
+        text: "1",
         color: "blue"
       },
       {
-        text: "Bar",
+        text: "2",
         color: "red"
       }
     ],
@@ -80,37 +80,41 @@ export default {
     menu: false,
     model: [
       {
-        text: "Foo",
+        text: "1",
         color: "blue"
       }
     ],
-    x: 0,
     search: null,
-    y: 0
+    locker:true
   }),
 
   watch: {
     model(val, prev) {
       if (val.length === prev.length) return;
-
+      this.submit()
       this.model = val.map(v => {
         if (typeof v === "string") {
           v = {
             text: v,
             color: this.colors[this.nonce - 1]
           };
-
           this.items.push(v);
-
           this.nonce++;
         }
-
         return v;
       });
     }
   },
-
   methods: {
+    submit(){
+      if(this.locker){
+        this.$emit('submit',this.model)
+        this.locker = false
+        setTimeout(() => {
+          this.locker = true
+        }, 300);
+      }
+    },
     edit(index, item) {
       if (!this.editing) {
         this.editing = item;
@@ -135,6 +139,9 @@ export default {
           .indexOf(query.toString().toLowerCase()) > -1
       );
     }
+  },
+  mounted(){
+    this.submit()
   }
 };
 </script>
