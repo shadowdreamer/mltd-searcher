@@ -1,6 +1,4 @@
 <template>
-  <div>
-    <template>
       <v-combobox
         v-model="model"
         :filter="filter"
@@ -53,8 +51,6 @@
           </v-list-tile-action>
         </template>
       </v-combobox>
-    </template>
-  </div>
 </template>
 <script>
 export default {
@@ -74,13 +70,41 @@ export default {
       {
         text: "2",
         color: "red"
-      }
+      },
+      {
+        text: "3",
+        color: "red"
+      },
+      {
+        text: "4",
+        color: "red"
+      },
+      {
+        text: "5",
+        color: "red"
+      },
+      {
+        text: "6",
+        color: "red"
+      },
+      {
+        text: "7",
+        color: "red"
+      },
     ],
     nonce: 1,
     menu: false,
     model: [
       {
         text: "1",
+        color: "blue"
+      },
+      {
+        text: "2",
+        color: "blue"
+      },
+      {
+        text: "3",
         color: "blue"
       }
     ],

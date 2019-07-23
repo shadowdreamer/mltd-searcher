@@ -5,13 +5,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        message:{}
+        message: {},
+        list: []
     },
     mutations: {
         sendMessage: (state, msg) => {
             state.message = {};
             state.message = msg
         },
+        updateList: (state, result) => {
+            state.list = result
+        }
     },
     actions: {
 

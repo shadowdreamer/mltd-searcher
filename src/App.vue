@@ -1,31 +1,21 @@
 <template>
-  <v-app style="background-color:#f5ecbb">
-    <v-content>
-      <SearchBar @submit="submit($event)" />
-      <SnackBar />
-      <!-- <div>
-        <p v-for="item in result" :key="item.id">
-          <v-img
-            height="50"
-            aspect-ratio="1"
-            :src="`https://storage.matsurihi.me/mltd/icon_l/${item.resourceId}_1.png`"
-          />
-          {{item.id}}{{item.name}}
-        </p>
-      </div>-->
-      <v-card>
-        <v-list>
-          <v-list-tile v-for="item in result" :key="item.id" avatar @click.stop>
-            <v-list-tile-avatar>
-              <img :src="`https://storage.matsurihi.me/mltd/icon_l/${item.resourceId}_1.png`" />
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title v-html="item.name"></v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-      </v-card>
+  <v-app>
+    <v-toolbar extended dense flat>
+      <v-toolbar-side-icon></v-toolbar-side-icon>
+    </v-toolbar>
+    <v-layout row pb-2 justify-center>
+      <v-flex md8 xs12>
+        <SearchBar @submit="submit($event)" style="margin-top:-54px" />
+      </v-flex>
+    </v-layout>
+    <v-content style="margin-top:-54px">
+      <v-layout row justify-center>
+        <v-flex xs12 md8>
+          <router-view></router-view>
+        </v-flex>
+      </v-layout>
     </v-content>
+    <SnackBar />
   </v-app>
 </template>
 
@@ -34,7 +24,7 @@ import { db } from '@/plugins/dexie'
 export default {
   name: "App",
   data: () => ({
-    result: []
+
   }),
   components: {
     SearchBar: () => import("@/components/SearchBar"),
@@ -70,13 +60,19 @@ export default {
       console.log(ev)
       let range = Array.from(ev, ev => [parseInt(ev.text), parseInt(ev.text) + 1])
       console.log(range)
-      this.result = await db.idols.where('idolId').inAnyRange(range).toArray()
+      let result = await db.idols.where('idolId').inAnyRange(range).toArray()
+      // let result = await db.idols.toArray()
+      this.$store.commit('updateList', result)
     }
   },
   mounted () {
-    this.getCards()
+    // this.getCards()
     window.db = db
     // this.checkVersion()
   }
 }
 </script>
+<style scoped>
+ 
+</style>
+
