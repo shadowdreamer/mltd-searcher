@@ -1,14 +1,29 @@
 <template>
   <v-app>
-    <v-toolbar extended dense flat>
-      <v-toolbar-side-icon></v-toolbar-side-icon>
-    </v-toolbar>
-    <v-layout row pb-2 justify-center>
+    <v-toolbar app dense flat>    
+      <v-layout row pb-2 justify-center>
       <v-flex md8 xs12>
-        <SearchBar @submit="submit($event)" style="margin-top:-54px" />
+        <v-toolbar-items>
+          <v-spacer></v-spacer>
+          <v-btn flat @click.stop>
+             <v-icon>sort</v-icon>sort
+          </v-btn>
+          <v-btn flat class="ml-4" @click="filterdialog=true">
+              <v-icon>filter_list</v-icon>filter
+          </v-btn>
+        </v-toolbar-items> 
       </v-flex>
     </v-layout>
-    <v-content style="margin-top:-54px">
+    </v-toolbar>
+    <v-content >
+    <v-layout row pb-2 justify-center>
+      <v-flex md8 xs12>
+        <SearchBar
+          v-model="keywords"
+          @input="submit($event)"          
+        />
+      </v-flex>
+    </v-layout>
       <v-layout row justify-center>
         <v-flex xs12 md8>
           <router-view></router-view>
@@ -16,6 +31,7 @@
       </v-layout>
     </v-content>
     <SnackBar />
+    <FilterDialog v-model="filterdialog" @close="filterdialog=false"/>
   </v-app>
 </template>
 
@@ -24,11 +40,13 @@ import { db } from '@/plugins/dexie'
 export default {
   name: "App",
   data: () => ({
-
+    keywords: [],
+    filterdialog:false
   }),
   components: {
     SearchBar: () => import("@/components/SearchBar"),
-    SnackBar: () => import("@/components/SnackBar")
+    SnackBar: () => import("@/components/SnackBar"),
+    FilterDialog:()=>import("@/components/FilterDialog")
   },
   methods: {
     async checkVersion () {
@@ -47,22 +65,30 @@ export default {
     async getCards () {
       let serverVer = await this.checkVersion()
       if (serverVer) {
-        console.log("updating cards data")
+        this.$store.commit('sendMessage',{text:'updating idol data'})
         const { data } = await this.$axios.post("/my-mltd", {
           version: serverVer
-        })
-        console.log(data)
+        })        
         await db.idols.bulkPut(data.cards)
         await db.dataver.put({ ver: 'current', currentVersion: serverVer })
+        this.$store.commit('sendMessage',{text:'update success'})
+      }else{
+        this.$store.commit('sendMessage',{text:'idol data is new'})
       }
     },
     async submit (ev) {
       console.log(ev)
-      let range = Array.from(ev, ev => [parseInt(ev.text), parseInt(ev.text) + 1])
-      console.log(range)
-      let result = await db.idols.where('idolId').inAnyRange(range).toArray()
+      if(ev.length === 0){
+        let result = await db.idols.toArray()
+        // this.$store.commit('updateList', result)
+        return
+      }
+      
+      // let range = Array.from(ev, ev => [parseInt(ev.text), parseInt(ev.text) + 1])
+      // console.log(range)
+      // let result = await db.idols.where('idolId').inAnyRange(range).toArray()
       // let result = await db.idols.toArray()
-      this.$store.commit('updateList', result)
+      // this.$store.commit('updateList', result)
     }
   },
   mounted () {
@@ -73,6 +99,5 @@ export default {
 }
 </script>
 <style scoped>
- 
 </style>
 

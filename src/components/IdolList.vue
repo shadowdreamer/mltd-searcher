@@ -12,13 +12,18 @@
         key-field="id"
       >
         <template v-slot="{item}">
-          <v-list-tile avatar @click.stop="$router.push({path:`/card/${item.id}`})">
+          <v-list-tile avatar @click.stop>
             <v-list-tile-avatar>
               <img :src="`https://storage.matsurihi.me/mltd/icon_l/${item.resourceId}_1.png`" />
             </v-list-tile-avatar>
             <v-list-tile-content>
               <v-list-tile-title v-html="item.name"></v-list-tile-title>
             </v-list-tile-content>
+            <v-list-tile-action>
+              <v-btn flat @click.stop="$router.push({path:`/card/${item.id}`})" icon>
+                <v-icon>arrow_forward</v-icon>
+              </v-btn>
+            </v-list-tile-action>
           </v-list-tile>
         </template>
       </RecycleScroller>
@@ -51,7 +56,7 @@ export default {
 }
 .wrapper {
   overflow: hidden;
-  height: calc(100vh - 128px);
+  height: calc(100vh - 110px);
   left: 0;
   right: 0;
 }
