@@ -2,7 +2,6 @@
   <div class="home">
     <SearchBar v-model="keywords" @input="submit($event)" />
     <IdolList />
-    <FilterDialog v-model="filterdialog" @close="filterdialog=false" />
   </div>
 </template>
 <script>
@@ -16,7 +15,6 @@ export default {
   components: {
     IdolList,
     SearchBar: () => import("@/components/SearchBar"),
-    FilterDialog: () => import("@/components/FilterDialog")
   },
   methods: {
     async submit (ev) {

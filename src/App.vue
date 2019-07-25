@@ -7,6 +7,9 @@
             <v-btn icon v-show="$route.name === 'card'" @click="$router.push({path:'/'})">
               <v-icon>keyboard_backspace</v-icon>
             </v-btn>
+            <v-toolbar-title
+              v-if="!!$store.state.crrt && $route.name==='card'"
+            >{{$store.state.crrt.name}}</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn text small @click.stop v-show="$route.name === 'home'">
               <v-icon>sort</v-icon>sort
@@ -25,6 +28,7 @@
         </v-flex>
       </v-layout>
       <SnackBar />
+      <FilterDialog v-model="filterdialog" @close="filterdialog=false" />
       <v-footer absolute>
         <v-spacer></v-spacer>
         <div>&copy; {{ new Date().getFullYear() }}</div>
@@ -38,11 +42,11 @@ import { db } from '@/plugins/dexie'
 export default {
   name: "App",
   data: () => ({
-    keywords: [],
     filterdialog: false
   }),
   components: {
     SnackBar: () => import("@/components/SnackBar"),
+    FilterDialog: () => import("@/components/FilterDialog")
   },
   methods: {
     async checkVersion () {
@@ -74,8 +78,14 @@ export default {
     },
   },
   mounted () {
-    // this.getCards()
+    this.getCards()
     window.db = db
   }
 }
 </script>
+<style>
+html {
+  overflow-y: hidden;
+}
+</style>
+

@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         message: {},
-        list: []
+        list: [],
+        crrt:null
     },
     mutations: {
         sendMessage: (state, msg) => {
@@ -15,6 +16,9 @@ export default new Vuex.Store({
         },
         updateList: (state, result) => {
             state.list = result
+        },
+        setCrrt:(state,item)=>{
+            state.crrt = item
         }
     },
     actions: {

@@ -7423,6 +7423,11 @@ vue@^2.6.10:
   resolved "https://registry.npm.taobao.org/vue/download/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha1-pysaQqTYKnIepDjRtr9V5mGVxjc=
 
+vuescroll@^4.13.1:
+  version "4.13.1"
+  resolved "https://registry.yarnpkg.com/vuescroll/-/vuescroll-4.13.1.tgz#af6c4e35fb690faca31d8a8d77973a61229adf8f"
+  integrity sha512-cwp+ptQHZRYwjlDjwxDYMypYzML1e6Y7XhDVWrkz274OxbpAnoXW0zLUaMN0Yvgquf81CgksEXSZgD/Ae/xQ3w==
+
 vuetify-loader@^1.2.2:
   version "1.2.2"
   resolved "https://registry.npm.taobao.org/vuetify-loader/download/vuetify-loader-1.2.2.tgz#7c221dcfd8482344518818d598f9cef8ddd85b6b"
