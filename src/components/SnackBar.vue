@@ -1,8 +1,8 @@
 <template>
   <v-snackbar
     v-model="snackbar"
-    top
-    left
+    bottom
+    right
     :color="crrt.type?crrt.type:'primary'"
     :timeout="2500"
   >{{crrt.text}}</v-snackbar>
@@ -33,7 +33,7 @@ export default {
       if (this.list.length > 0) {
         this.snackbar = true
         this.crrt = this.list.splice(0, 1)[0]
-        await this.sleep(1200)
+        await this.sleep(900)
         if (this.list.length > 0) {
           this.snackbar = false
         }

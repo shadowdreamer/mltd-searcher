@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <v-list class="wrapper">
+    <v-list dense style="margin-top:-24px" class="wrapper">
       <RecycleScroller
         :key="false"
         ref="scroller"
@@ -12,23 +11,17 @@
         key-field="id"
       >
         <template v-slot="{item}">
-          <v-list-tile avatar @click.stop>
-            <v-list-tile-avatar>
-              <img :src="`https://storage.matsurihi.me/mltd/icon_l/${item.resourceId}_1.png`" />
-            </v-list-tile-avatar>
-            <v-list-tile-content>
-              <v-list-tile-title v-html="item.name"></v-list-tile-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-btn flat @click.stop="$router.push({path:`/card/${item.id}`})" icon>
-                <v-icon>arrow_forward</v-icon>
-              </v-btn>
-            </v-list-tile-action>
-          </v-list-tile>
+          <v-list-item  @click.stop="$router.push({path:`/card/${item.id}`})">
+            <v-list-item-avatar>
+              <v-img :src="`https://storage.matsurihi.me/mltd/icon_l/${item.resourceId}_1.png`" />
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title v-html="item.name"></v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </template>
       </RecycleScroller>
     </v-list>
-  </div>
 </template>
 <script>
 import { mapState } from 'vuex'
@@ -51,14 +44,11 @@ export default {
 </script>
 <style scoped>
 .scroller {
-  width: 100%;
   height: 100%;
 }
 .wrapper {
   overflow: hidden;
-  height: calc(100vh - 110px);
-  left: 0;
-  right: 0;
+  height: calc(100vh - 150px);
 }
 </style>
 

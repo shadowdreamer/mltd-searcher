@@ -1,7 +1,7 @@
 <template>
-  <div>
- 
-  </div>
+   <v-card class="mt-4">
+     123
+   </v-card>
 </template>
 <script>
 export default {

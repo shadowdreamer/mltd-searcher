@@ -10,41 +10,43 @@
     multiple
     small-chips
     solo
-    
+    autocomplete="off"
   >
     <!-- <template v-slot:no-data>
-      <v-list-tile>
+      <v-list-item>
         <span class="subheading">Create</span>
         <v-chip :color="`${colors[nonce - 1]} lighten-3`" label small>{{ search }}</v-chip>
-      </v-list-tile>
+      </v-list-item>
     </template>-->
     <template v-slot:append>
-      <v-btn icon @click.stop="model=[]">
+      <v-btn icon small @click.stop="model=[]">
         <v-icon>clear_all</v-icon>
       </v-btn>
     </template>
     <template v-slot:prepend-item>
-      <v-card flat>
-        <div class="mx-3">
+      <v-card flat class="mx-2">
+        <v-card-text class="my-0 py-2 px-2">
           <v-chip v-for="item in subItems.rarity" 
+          class="mr-2"
           :key="item.text" @click.stop="model.push(item)"
           v-show="!model.includes(item)"
           dark label small>{{ item.text }}</v-chip>
-        </div>
+        </v-card-text>
         <v-divider></v-divider>
-        <div class="mx-3">
+        <v-card-text class="my-0 py-2 px-2">
           <v-chip v-for="item in subItems.idolType" 
+          class="mr-2"
           :key="item.text" @click.stop="model.push(item)"
           v-show="!model.includes(item)"
           dark label small>{{ item.text }}</v-chip>
-        </div>        
+        </v-card-text>        
       </v-card>
     </template>
     <template v-slot:selection="{ item, parent, selected }">
       <v-chip
         v-if="item === Object(item)"
         :color="`${item.color} lighten-3`"
-        :selected="selected"
+        :input-value="selected"
         label
         small
         dark
@@ -54,9 +56,7 @@
       </v-chip>
     </template>
     <template v-slot:item="{ index, item }">
-      <v-list-tile-content>
         <v-chip :color="`${item.color} lighten-3`" dark label small>{{ item.text }}</v-chip>
-      </v-list-tile-content>
     </template>
   </v-combobox>
 </template>
