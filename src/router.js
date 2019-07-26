@@ -12,6 +12,9 @@ export default new Router({
     {
       path: '/',
       name: 'home',
+      meta: {
+        keepAlive: true
+      },
       component: Home
     },
     { path: '/card', redirect: '/' },

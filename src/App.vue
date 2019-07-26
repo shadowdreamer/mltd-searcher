@@ -24,11 +24,13 @@
     <v-content>
       <v-layout justify-center>
         <v-flex xs12 md8>
-          <router-view></router-view>
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
         </v-flex>
       </v-layout>
       <SnackBar />
-      <FilterDialog v-model="filterdialog" @close="filterdialog=false" />
+      <FilterDialog v-model="filterdialog" @close="filterdialog=false"/>
       <v-footer absolute>
         <v-spacer></v-spacer>
         <div>&copy; {{ new Date().getFullYear() }}</div>
@@ -69,8 +71,10 @@ export default {
         const { data } = await this.$axios.post("/my-mltd", {
           version: serverVer
         })
-        await db.idols.bulkPut(data.cards)
-        await db.dataver.put({ ver: 'current', currentVersion: serverVer })
+        await db.transaction("rw", db.idols, db.dataver, function () {
+          db.idols.bulkPut(data.cards)
+          db.dataver.put({ ver: 'current', currentVersion: serverVer })
+        })
         this.$store.commit('sendMessage', { text: 'update success' })
       } else {
         this.$store.commit('sendMessage', { text: 'idol data is new' })
@@ -78,14 +82,28 @@ export default {
     },
   },
   mounted () {
-    this.getCards()
-    window.db = db
+    // this.getCards()
   }
 }
 </script>
 <style>
 html {
   overflow-y: hidden;
+}
+* {
+  scrollbar-color: #bd237f #f2f2f2;
+  scrollbar-width: thin;
+}
+*::-webkit-scrollbar {
+  width: 6px;
+  background-color: #f2f2f2;
+}
+*::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background:  #bd237f;
+}
+*::-webkit-scrollbar-track {
+  border-radius: 5px;
 }
 </style>
 

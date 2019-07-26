@@ -1,8 +1,8 @@
 <template>
   <v-combobox
     v-model="model"
+    @input="submit()"
     :filter="filter"
-   
     :items="items"
     :search-input.sync="search"
     hide-selected
@@ -19,27 +19,38 @@
       </v-list-item>
     </template>-->
     <template v-slot:append>
-      <v-btn icon small @click.stop="model=[]">
+      <v-btn icon small @click="model=[]">
         <v-icon>clear_all</v-icon>
       </v-btn>
     </template>
     <template v-slot:prepend-item>
       <v-card flat class="mx-2">
         <v-card-text class="my-0 py-2 px-2">
-          <v-chip v-for="item in subItems.rarity" 
-          class="mr-2"
-          :key="item.text" @click.stop="model.push(item)"
-          v-show="!model.includes(item)"
-          dark label small>{{ item.text }}</v-chip>
+          <v-chip
+            v-for="item in subItems.rarity"
+            class="mr-2"
+            :key="item.text" :color="item.color"
+            @click="model.push(item);submit()"
+            v-show="!model.includes(item)"
+            dark
+            label
+            small
+          >{{ item.text }}</v-chip>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-text class="my-0 py-2 px-2">
-          <v-chip v-for="item in subItems.idolType" 
-          class="mr-2"
-          :key="item.text" @click.stop="model.push(item)"
-          v-show="!model.includes(item)"
-          dark label small>{{ item.text }}</v-chip>
-        </v-card-text>        
+          <v-chip
+            v-for="item in subItems.idolType"
+            class="mr-2"
+            :key="item.text" :color="item.color"
+            @click="model.push(item);submit()"
+            v-show="!model.includes(item)"
+            dark
+            label
+            small
+          >{{ item.text }}</v-chip>
+        </v-card-text>
+        <v-divider></v-divider>
       </v-card>
     </template>
     <template v-slot:selection="{ item, parent, selected }">
@@ -56,11 +67,12 @@
       </v-chip>
     </template>
     <template v-slot:item="{ index, item }">
-        <v-chip :color="`${item.color} lighten-3`" dark label small>{{ item.text }}</v-chip>
+      <v-chip :color="`${item.color} lighten-3`" dark label small>{{ item.text }}</v-chip>
     </template>
   </v-combobox>
 </template>
 <script>
+import {mapState} from 'vuex'
 export default {
   name: "searchbar",
   data: () => ({
@@ -70,23 +82,12 @@ export default {
     editing: null,
     index: -1,
     items: [
-      { text: "haruka", type: 'idolId', val: '1', color: "blue" },
-      { text: "chihaya", type: 'idolId', val: '2', color: "red" },
-      { text: "miki", type: 'idolId', val: '3', color: "red" },
-      { text: "yayoi", type: 'idolId', val: '4', color: "red" },
-      { header:'click to apply items'},
+      { text: "haruka", type: 'idolId', val: 1, color: "blue" },
+      { text: "chihaya", type: 'idolId', val: 2, color: "red" },
+      { text: "miki", type: 'idolId', val: 3, color: "red" },
+      { text: "yayoi", type: 'idolId', val: 4, color: "red" },
+      { header: 'click to apply items' },
     ],
-    subItems: {
-      rarity: [
-        { text: 'ssr', type: 'rarity', val: '4', color: 'green' },
-        { text: 'sr', type: 'rarity', val: '3', color: 'green' },
-      ],
-      idolType: [
-        { text: 'princess', type: 'idolType', val: '1', color: 'red' },
-        { text: 'fairy', type: 'idolType', val: '2', color: 'blue' },
-        { text: 'angel', type: 'idolType', val: '3', color: 'blue' },
-      ]
-    },
     nonce: 1,
     menu: false,
     model: [],
@@ -94,12 +95,6 @@ export default {
     locker: true,
     locker_timer: null
   }),
-  props: {
-    value: {
-      type: Array,
-      default: []
-    }
-  },
   watch: {
     model (val, prev) {
       if (val.length === prev.length) return;
@@ -113,13 +108,18 @@ export default {
         }
         return v;
       });
-      this.submit()
+    },
+    keywords(val){
+      this.model = val
     }
+  },
+  computed:{
+    ...mapState(['keywords','subItems'])
   },
   methods: {
     submit () {
       if (this.locker) {
-        this.$emit('input', this.model)
+        this.$store.dispatch('submit', this.model)
         this.locker = false
         this.locker_timer = setTimeout(() => {
           this.locker = true
@@ -127,27 +127,17 @@ export default {
       } else {
         clearTimeout(this.locker_timer)
         this.locker_timer = setTimeout(() => {
-          this.$emit('input', this.model)
+          this.$store.dispatch('submit', this.model)
           this.locker = true
         }, 500)
       }
     },
-    edit (index, item) {
-      if (!this.editing) {
-        this.editing = item;
-        this.index = index;
-      } else {
-        this.editing = null;
-        this.index = -1;
-      }
-    },
     filter (item, queryText, itemText) {
-      if (item.header) return false
+      if (item.header) return true
+      console.log(item, queryText, itemText)
       const hasValue = val => (val != null ? val : "")
-
       const text = hasValue(itemText)
       const query = hasValue(queryText)
-
       return (
         text
           .toString()

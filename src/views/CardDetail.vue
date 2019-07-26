@@ -1,14 +1,21 @@
 <template>
   <div>
-    <v-card class="ma-2" >
-       <v-responsive :aspect-ratio="16/9">
-      <v-carousel  hide-delimiters>
-        <v-carousel-item v-for="item in [
-        `https://storage.matsurihi.me/mltd/card_bg/032emi0144_0.png`,
-        `https://storage.matsurihi.me/mltd/card_bg/032emi0144_1.png`
-        ]" :key="item" :src="item"></v-carousel-item>
-      </v-carousel>   
-       </v-responsive>   
+    <v-card class="ma-2">
+      <v-carousel
+        v-if="idol.rarity === 4"
+        cycle
+        :height="carouselHeight"
+      >
+        <v-carousel-item
+          v-for="item in [
+        `https://storage.matsurihi.me/mltd/card_bg/${idol.resourceId}_0.png`,
+        `https://storage.matsurihi.me/mltd/card_bg/${idol.resourceId}_1.png`
+        ]"
+          :key="item"
+        >
+        <v-img :height="carouselHeight" :src="item"/>
+        </v-carousel-item>
+      </v-carousel>
     </v-card>
     <v-overlay :value="loading">
       <v-progress-circular indeterminate size="64"></v-progress-circular>
@@ -27,7 +34,16 @@ export default {
     },
     idol () {
       return this.$store.state.crrt || {}
-    }
+    },
+    carouselHeight () {
+      switch (this.$vuetify.breakpoint.name) {
+        case 'xs': return '280px'
+        case 'sm': return '320px'
+        case 'md': return '400px'
+        case 'lg': return '420px'
+        case 'xl': return '480px'
+      }
+    },
   },
   methods: {
     async checkIdol () {
@@ -37,6 +53,7 @@ export default {
         const { data } = await this.$axios(`/mltd/cards/${this.routeId}`)
         this.$store.commit('setCrrt', data[0])
         this.loading = false
+        return
       }
     }
   },
