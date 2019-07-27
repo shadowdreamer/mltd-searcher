@@ -1,6 +1,6 @@
 import Dexie from 'dexie'
 let db = new Dexie('testData')
-db.version(1).stores({ idols: "id,name,idolType,idolId,rarity,centerEffectName", dataver: '&ver' })
+db.version(1).stores({ idols: "id,addDate,idolType,idolId,rarity,extraType", dataver: '&ver' })
 // Do some application logic on the database:
 // db.transaction('rw', db.friends, db.dataver, function* () {
 //     // db.friends.add({name: "David", age: 40, sex: "male"});

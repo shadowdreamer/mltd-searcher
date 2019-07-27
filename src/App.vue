@@ -11,7 +11,7 @@
               v-if="!!$store.state.crrt && $route.name==='card'"
             >{{$store.state.crrt.name}}</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn text small @click.stop v-show="$route.name === 'home'">
+            <v-btn text small @click="sortdialog=true" v-show="$route.name === 'home'">
               <v-icon>sort</v-icon>sort
             </v-btn>
             <v-btn text small @click="filterdialog=true" v-show="$route.name === 'home'">
@@ -24,13 +24,12 @@
     <v-content>
       <v-layout justify-center>
         <v-flex xs12 md8>
-          <keep-alive>
             <router-view></router-view>
-          </keep-alive>
         </v-flex>
       </v-layout>
       <SnackBar />
       <FilterDialog v-model="filterdialog" @close="filterdialog=false"/>
+      <SortDialog v-model="sortdialog" @close="sortdialog=false"/>
       <v-footer absolute>
         <v-spacer></v-spacer>
         <div>&copy; {{ new Date().getFullYear() }}</div>
@@ -44,11 +43,13 @@ import { db } from '@/plugins/dexie'
 export default {
   name: "App",
   data: () => ({
-    filterdialog: false
+    filterdialog: false,
+    sortdialog:false,
   }),
   components: {
     SnackBar: () => import("@/components/SnackBar"),
-    FilterDialog: () => import("@/components/FilterDialog")
+    FilterDialog: () => import("@/components/FilterDialog"),
+    SortDialog: () => import("@/components/SortDialog"),
   },
   methods: {
     async checkVersion () {
@@ -65,14 +66,16 @@ export default {
       }
     },
     async getCards () {
+      let localLength = await db.idols.count()+100
       let serverVer = await this.checkVersion()
       if (serverVer) {
         this.$store.commit('sendMessage', { text: 'updating idol data' })
         const { data } = await this.$axios.post("/my-mltd", {
-          version: serverVer
+          version: serverVer,
+          localLength
         })
         await db.transaction("rw", db.idols, db.dataver, function () {
-          db.idols.bulkPut(data.cards)
+          db.idols.bulkPut(data)
           db.dataver.put({ ver: 'current', currentVersion: serverVer })
         })
         this.$store.commit('sendMessage', { text: 'update success' })
@@ -83,6 +86,7 @@ export default {
   },
   mounted () {
     // this.getCards()
+    window.db = db
   }
 }
 </script>

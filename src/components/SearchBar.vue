@@ -12,12 +12,6 @@
     solo
     autocomplete="off"
   >
-    <!-- <template v-slot:no-data>
-      <v-list-item>
-        <span class="subheading">Create</span>
-        <v-chip :color="`${colors[nonce - 1]} lighten-3`" label small>{{ search }}</v-chip>
-      </v-list-item>
-    </template>-->
     <template v-slot:append>
       <v-btn icon small @click="model=[]">
         <v-icon>clear_all</v-icon>
@@ -25,31 +19,18 @@
     </template>
     <template v-slot:prepend-item>
       <v-card flat class="mx-2">
-        <v-card-text class="my-0 py-2 px-2">
-          <v-chip
-            v-for="item in subItems.rarity"
-            class="mr-2"
-            :key="item.text" :color="item.color"
-            @click="model.push(item);submit()"
-            v-show="!model.includes(item)"
-            dark
-            label
-            small
-          >{{ item.text }}</v-chip>
+        <template  v-for="line in  ['rarity','idolType','extraType']">
+        <div class="my-0 filter-divider" :key='line+1'> 
+          <hr/><div> {{line.toUpperCase()}}</div><hr/>
+        </div>  
+        <v-card-text class="py-1 px-2" :key='line'>
+        <v-chip v-for="item in subItems[line]" 
+        class="mr-2 mb-1" @click="model.push(item);submit()"
+        :key="item.text" :color="item.color"
+        v-show="!model.includes(item)"
+        dark label small>{{ item.text }}</v-chip>
         </v-card-text>
-        <v-divider></v-divider>
-        <v-card-text class="my-0 py-2 px-2">
-          <v-chip
-            v-for="item in subItems.idolType"
-            class="mr-2"
-            :key="item.text" :color="item.color"
-            @click="model.push(item);submit()"
-            v-show="!model.includes(item)"
-            dark
-            label
-            small
-          >{{ item.text }}</v-chip>
-        </v-card-text>
+        </template>
         <v-divider></v-divider>
       </v-card>
     </template>
@@ -134,7 +115,6 @@ export default {
     },
     filter (item, queryText, itemText) {
       if (item.header) return true
-      console.log(item, queryText, itemText)
       const hasValue = val => (val != null ? val : "")
       const text = hasValue(itemText)
       const query = hasValue(queryText)
@@ -147,7 +127,8 @@ export default {
     }
   },
   mounted () {
-    this.submit()
+     this.model = this.keywords
+     this.submit()
   }
 };
 </script>
