@@ -30,6 +30,7 @@
       <SnackBar />
       <FilterDialog v-model="filterdialog" @close="filterdialog=false"/>
       <SortDialog v-model="sortdialog" @close="sortdialog=false"/>
+      <BottomSheet v-model="bottomSheet" :progress="progress" :message="message"/>
       <v-footer absolute>
         <v-spacer></v-spacer>
         <div>&copy; {{ new Date().getFullYear() }}</div>
@@ -45,11 +46,15 @@ export default {
   data: () => ({
     filterdialog: false,
     sortdialog:false,
+    bottomSheet:false,
+    message:'',
+    progress:0,
   }),
   components: {
     SnackBar: () => import("@/components/SnackBar"),
     FilterDialog: () => import("@/components/FilterDialog"),
     SortDialog: () => import("@/components/SortDialog"),
+    BottomSheet:()=>import("@/components/BottomSheet"),
   },
   methods: {
     async checkVersion () {
@@ -66,26 +71,36 @@ export default {
       }
     },
     async getCards () {
-      let localLength = await db.idols.count()+100
+      let _this = this
+      let localLength = await db.idols.count()
+      if(localLength>100)localLength+=100;
       let serverVer = await this.checkVersion()
       if (serverVer) {
+        this.bottomSheet = true
         this.$store.commit('sendMessage', { text: 'updating idol data' })
         const { data } = await this.$axios.post("/my-mltd", {
           version: serverVer,
           localLength
+        }, 
+        {
+          onDownloadProgress(e){
+            _this.progress = Math.floor(e.loaded/e.total*100)
+          }
         })
         await db.transaction("rw", db.idols, db.dataver, function () {
           db.idols.bulkPut(data)
           db.dataver.put({ ver: 'current', currentVersion: serverVer })
         })
         this.$store.commit('sendMessage', { text: 'update success' })
+        this.$store.dispatch('submit',[])
       } else {
         this.$store.commit('sendMessage', { text: 'idol data is new' })
       }
+      this.bottomSheet = false
     },
   },
   mounted () {
-    // this.getCards()
+    this.getCards()
     window.db = db
   }
 }

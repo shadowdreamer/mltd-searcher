@@ -39,7 +39,7 @@ export default new Vuex.Store({
             state.message = msg
         },
         updateList: (state, result) => {
-            state.list = result
+            state.list = result.reverse()
         },
         setCrrt: (state, item) => {
             state.crrt = item
@@ -78,6 +78,9 @@ export default new Vuex.Store({
                             list.push(idolType.includes(idol.idolType)) : '';
                         (!!extraType && first != 'extraType') ?
                             list.push(extraType.includes(idol.extraType)) : '';
+                        if([5,7].includes(idol.extraType)){
+                            list.push(extraType?extraType.includes(5)||extraType.includes(7):false )
+                        }
                         return list.reduce((a, b) => a && b)
                     }).toArray()
             })

@@ -1,5 +1,5 @@
 <template>
-  <v-list dense style="margin-top:-24px" class="wrapper">
+  <v-list dense style="margin-top:0x" class="wrapper">
     <RecycleScroller
       :key="false"
       ref="scroller"
@@ -13,7 +13,13 @@
       <template v-slot="{item}">
         <v-list-item @click.stop="checkCard(item)">
           <v-list-item-avatar>
-            <v-img :src="`https://storage.matsurihi.me/mltd/icon_l/${item.resourceId}_1.png`" />
+            <v-img :src="`https://storage.matsurihi.me/mltd/icon_l/${item.resourceId}_1.png`" >
+                 <template v-slot:placeholder>
+                  <v-layout fill-height align-center justify-center ma-0>
+                    <v-progress-circular  indeterminate color="primary"></v-progress-circular>
+                  </v-layout>
+                </template>
+            </v-img>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title v-html="item.name"></v-list-item-title>
@@ -63,10 +69,9 @@ export default {
 .scroller::-webkit-scrollbar-track {
   border-radius: 5px;
 }
-
 .wrapper {
   overflow: hidden;
-  height: calc(100vh - 150px);
+  height: calc(100vh - 160px);
 }
 </style>
 
