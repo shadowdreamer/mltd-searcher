@@ -107,7 +107,7 @@ export default {
 </script>
 <style>
 html {
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 * {
   scrollbar-color: #bd237f #f2f2f2;
