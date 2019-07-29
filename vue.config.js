@@ -2,8 +2,8 @@ const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 module.exports = {
   devServer: {
     proxy: {
-      '/mltd': {
-        target: 'https://api.matsurihi.me/mltd/v1',
+      '/version': {
+        target: 'https://api.matsurihi.me/mltd/v1/version/latest',
         ws: true,
         changeOrigin: true,
         pathRewrite: { '^/mltd': '' }

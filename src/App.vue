@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     async checkVersion () {
-      const serverVer = (await this.$axios("/mltd/version/latest")).data.res.updateTime
+      const serverVer = (await this.$axios("/version")).data.res.updateTime
       console.log(serverVer)
       let current = await db.dataver.get({ ver: 'current' })
       console.log(current)
