@@ -1,20 +1,16 @@
 <template>
   <v-container>
-    <v-layout row wrap>
-      <v-flex xs12  v-if="idol.rarity === 4 && [0,4].includes(idol.extraType)">
-        <v-carousel         
-          cycle
-          :height="carouselHeight"
-          hide-delimiter-background
-        >
+    <v-layout v-if="idol.resourceId" row wrap>
+      <v-flex xs12 v-if="idol.rarity === 4 && [0,4].includes(idol.extraType)">
+        <v-carousel cycle :height="carouselHeight" hide-delimiter-background>
           <v-carousel-item
             v-for="item in [
-        `https://storage.matsurihi.me/mltd/card_bg/${idol.resourceId}_0.png`,
-        `https://storage.matsurihi.me/mltd/card_bg/${idol.resourceId}_1.png`
+        `/storage/card_bg/${idol.resourceId}_0.png`,
+        `/storage/card_bg/${idol.resourceId}_1.png`
         ]"
             :key="item"
           >
-            <v-img :height="carouselHeight" :src="item"  @click="checkImg(item)">
+            <v-img :height="carouselHeight" :src="item" @click="checkImg(item)">
               <template v-slot:placeholder>
                 <v-layout fill-height align-center justify-center ma-0>
                   <v-progress-circular size="50" indeterminate color="primary"></v-progress-circular>
@@ -24,35 +20,63 @@
           </v-carousel-item>
         </v-carousel>
       </v-flex>
-      <v-flex xs12 class="mt-2">
-        <v-card v-if="idol.resourceId">
+      <v-flex xs12>
+        <v-banner>
+          <p class="body-2 grey--text">{{idol.awakeningText}}</p>
+          <p class="text-right caption grey--text">Release:{{idol.addDate.slice(0,10)}}</p>
+        </v-banner>
+      </v-flex>
+      <v-flex xs12 class="mt-2" v-for="(awake,i) in ['','Awakened']" :key="i">
+        <v-card>
           <div class="mb-1 mt-0 filter-divider">
             <hr />
-            <div>before awaken</div>
+            <div>{{awake}}</div>
             <hr />
           </div>
           <v-layout row wrap class="px-4 py-3">
-            <v-flex xs4>
-              <v-img
-                @click="checkImg(`https://storage.matsurihi.me/mltd/card/${idol.resourceId}_0_b.png`)"
-                :src="`https://storage.matsurihi.me/mltd/card/${idol.resourceId}_0_a.png`"
-              >
-                <template v-slot:placeholder>
-                  <v-layout fill-height align-center justify-center ma-0>
-                    <v-progress-circular size="50" indeterminate color="primary"></v-progress-circular>
-                  </v-layout>
-                </template>
-              </v-img>
-            </v-flex>
-            <v-flex xs8>
+            <v-flex xs4 md3>
               <v-card flat>
-                <v-card-title primary-title></v-card-title>
+                <v-img
+                  @click="checkImg(`/storage/card/${idol.resourceId}_${i}_b.png`)"
+                  :src="`/storage/card/${idol.resourceId}_${i}_a.png`"
+                >
+                  <template v-slot:placeholder>
+                    <v-layout fill-height align-center justify-center ma-0>
+                      <v-progress-circular size="50" indeterminate color="primary"></v-progress-circular>
+                    </v-layout>
+                  </template>
+                </v-img>
+              </v-card>
+            </v-flex>
+            <v-flex xs8 md3>
+              <v-card flat>
+                <v-card-text
+                  class="mt-0 pt-0 caption darken-4"
+                  v-html="idol['flavorText'+awake].replace(/\n/g,'<br/>')"
+                ></v-card-text>
+              </v-card>
+            </v-flex>
+            <v-flex xs12 md6 >
+              <v-card flat>
+                <v-layout row wrap>
+                  <v-flex xs6 class="pa-3">
+                    <v-card-text>
+                    <p>levelMax：{{idol['levelMax'+awake]}}</p>
+                    <p>dance:{{idol['danceMax'+awake]}}</p>
+                    <p>visual:{{idol['visualMax'+awake]}}</p>
+                    <p>vocal:{{idol['vocalMax'+awake]}}</p>                      
+                    </v-card-text>
+                  </v-flex>
+                  <v-flex xs6>
+                    <StatusPanel/>
+                  </v-flex>
+                </v-layout>
               </v-card>
             </v-flex>
           </v-layout>
         </v-card>
       </v-flex>
-      <v-flex xs12 class="mt-2">
+      <!-- <v-flex xs12 class="mt-2">
         <v-card v-if="idol.resourceId">
           <div class="mb-1 mt-0 filter-divider">
             <hr />
@@ -61,9 +85,10 @@
           </div>
           <v-layout row wrap class="px-4 py-3">
             <v-flex xs4>
+               <v-card flat>
               <v-img
-                @click="checkImg(`https://storage.matsurihi.me/mltd/card/${idol.resourceId}_1_b.png`)"
-                :src="`https://storage.matsurihi.me/mltd/card/${idol.resourceId}_1_a.png`"
+                @click="checkImg(`/storage/card/${idol.resourceId}_1_b.png`)"
+                :src="`/storage/card/${idol.resourceId}_1_a.png`"
               >
                 <template v-slot:placeholder>
                   <v-layout fill-height align-center justify-center ma-0>
@@ -71,15 +96,17 @@
                   </v-layout>
                 </template>
               </v-img>
+               </v-card>
             </v-flex>
             <v-flex xs8>
               <v-card flat>
-                <v-card-title primary-title></v-card-title>
+                <v-card-text class="mt-0 pt-0 caption darken-4"
+                v-html="idol.flavorTextAwakened.replace(/\n/g,'<br/>')"></v-card-text>
               </v-card>
             </v-flex>
           </v-layout>
         </v-card>
-      </v-flex>
+      </v-flex>-->
       <v-flex xs12 md7 class="mt-2" v-if="costumes.length > 0">
         <v-card>
           <div class="mb-1 mt-0 filter-divider">
@@ -106,7 +133,7 @@
                   <v-flex xs4 md3 class="pr-3">
                     <v-img
                       :aspect-ratio="0.716"
-                      :src="`https://storage.matsurihi.me/mltd/costume_icon_ll/${item.resourceId}.png`"
+                      :src="`/storage/costume_icon_ll/${item.resourceId}.png`"
                     >
                       <template v-slot:placeholder>
                         <v-layout fill-height align-center justify-center ma-0>
@@ -122,7 +149,7 @@
         </v-card>
       </v-flex>
 
-      <v-flex xs12  md5 :class="['mt-2',$vuetify.breakpoint.mdAndUp&&idol.rarity==4?'pl-2':'']">
+      <v-flex xs12 md5 :class="['mt-2',$vuetify.breakpoint.mdAndUp&&idol.rarity==4?'pl-2':'']">
         <v-card v-if="idol.resourceId">
           <div class="mb-1 mt-0 filter-divider">
             <hr />
@@ -133,7 +160,7 @@
             <template v-for="item in sameIdol">
               <v-list-item :key="item.id" @click="$router.push({path:`/card/${item.id}`})">
                 <v-list-item-avatar>
-                  <v-img :src="`https://storage.matsurihi.me/mltd/icon_l/${item.resourceId}_1.png`">
+                  <v-img :src="`/storage/icon_l/${item.resourceId}_1.png`">
                     <template v-slot:placeholder>
                       <v-layout fill-height align-center justify-center ma-0>
                         <v-progress-circular indeterminate color="primary"></v-progress-circular>
@@ -160,12 +187,15 @@
 import { db } from "@/plugins/dexie"
 export default {
   name: "card",
+  components:{
+    StatusPanel:()=>import('@/components/StatusPanel')
+  },
   data: () => ({
     loading: false,
     costumeTab: null,
     tab: null,
     sameIdol: [],
-    sameDate:[],
+    sameDate: [],
   }),
   computed: {
     costumes () {
@@ -211,7 +241,7 @@ export default {
     },
     async getSameIdol () {
       await this.checkIdol()
-      let { idolId, addDate }= this.idol
+      let { idolId, addDate } = this.idol
       let id = this.routeId
       let sameIdol = await db.idols
         .where("idolId")
@@ -221,15 +251,15 @@ export default {
         })
         .toArray()
       this.sameIdol = sameIdol
-      if(addDate){
-         let sameDate = await db.idols
-        .where('addDate')
-        .equals(addDate)
-        .filter(function (idol) {
-          return idol.id != id
-        })
-        .toArray()
-        this.sameDate = sameDate      
+      if (addDate) {
+        let sameDate = await db.idols
+          .where('addDate')
+          .equals(addDate)
+          .filter(function (idol) {
+            return idol.id != id
+          })
+          .toArray()
+        this.sameDate = sameDate
       }
     },
     async checkIdol () {

@@ -1,39 +1,58 @@
 <template>
   <v-app>
-    <v-app-bar color="primary" dark dense app>
-      <v-layout justify-center>
-        <v-flex xs12 md8>
-          <v-toolbar-items>
-            <v-btn icon v-show="$route.name === 'card'" @click="$router.push({path:'/'})">
-              <v-icon>keyboard_backspace</v-icon>
-            </v-btn>
-            <v-toolbar-title
-              v-if="!!$store.state.crrt && $route.name==='card'"
-            >{{$store.state.crrt.name}}</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn text small @click="sortdialog=true" v-show="$route.name === 'home'">
-              <v-icon>sort</v-icon>sort
-            </v-btn>
-            <v-btn text small @click="filterdialog=true" v-show="$route.name === 'home'">
-              <v-icon>filter_list</v-icon>filter
-            </v-btn>
-          </v-toolbar-items>
-        </v-flex>
-      </v-layout>
+    <v-app-bar
+      color="primary"
+      dark
+      dense
+      app
+      :prominent="$route.name==='card'"
+      :shrink-on-scroll="$route.name==='card'"
+    >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title v-if="!!$store.state.crrt && $route.name==='card'">{{$store.state.crrt.name}}</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-toolbar-items>
+        <v-btn text small @click="sortdialog=true" v-show="$route.name === 'home'">
+          <v-icon>sort</v-icon>sort
+        </v-btn>
+        <v-btn text small @click="filterdialog=true" v-show="$route.name === 'home'">
+          <v-icon>filter_list</v-icon>filter
+        </v-btn>
+      </v-toolbar-items>
     </v-app-bar>
+    <v-navigation-drawer v-model="drawer" fixed temporary>
+      <v-list nav>
+        <v-list-item link to="/">
+          <v-list-item-icon>
+            <v-icon>dashboard</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Home</v-list-item-title>
+        </v-list-item>
+        <v-list-item link to="/about">
+          <v-list-item-icon>
+            <v-icon>mdi-help-box</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>About</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
     <v-content>
       <v-layout justify-center>
         <v-flex xs12 md8>
-            <router-view></router-view>
+          <router-view></router-view>
         </v-flex>
       </v-layout>
       <SnackBar />
-      <FilterDialog v-model="filterdialog" @close="filterdialog=false"/>
-      <SortDialog v-model="sortdialog" @close="sortdialog=false"/>
-      <BottomSheet v-model="bottomSheet" :progress="progress" :message="message"/>
+      <FilterDialog v-model="filterdialog" @close="filterdialog=false" />
+      <SortDialog v-model="sortdialog" @close="sortdialog=false" />
+      <BottomSheet v-model="bottomSheet" :progress="progress" :message="message" />
       <v-footer absolute>
         <v-spacer></v-spacer>
-        <div>&copy; {{ new Date().getFullYear() }}</div>
+        Data provider:
+         <v-btn color="#ea5b76" small text dark target="_blank" 
+        href="https://api.matsurihi.me/docs/">matsurihi.me
+        <v-icon small>mdi-open-in-new</v-icon>
+         </v-btn>
       </v-footer>
     </v-content>
   </v-app>
@@ -45,20 +64,21 @@ export default {
   name: "App",
   data: () => ({
     filterdialog: false,
-    sortdialog:false,
-    bottomSheet:false,
-    message:'',
-    progress:0,
+    sortdialog: false,
+    bottomSheet: false,
+    message: '',
+    progress: 0,
+    drawer: false
   }),
   components: {
     SnackBar: () => import("@/components/SnackBar"),
     FilterDialog: () => import("@/components/FilterDialog"),
     SortDialog: () => import("@/components/SortDialog"),
-    BottomSheet:()=>import("@/components/BottomSheet"),
+    BottomSheet: () => import("@/components/BottomSheet"),
   },
   methods: {
     async checkVersion () {
-      const serverVer = (await this.$axios("/version")).data.res.updateTime
+      const serverVer = (await this.$axios("/mltd/version/latest")).data.res.updateTime
       console.log(serverVer)
       let current = await db.dataver.get({ ver: 'current' })
       console.log(current)
@@ -73,7 +93,7 @@ export default {
     async getCards () {
       let _this = this
       let localLength = await db.idols.count()
-      if(localLength>100)localLength+=100;
+      if (localLength > 100) localLength += 100;
       let serverVer = await this.checkVersion()
       if (serverVer) {
         this.bottomSheet = true
@@ -81,18 +101,18 @@ export default {
         const { data } = await this.$axios.post("/my-mltd", {
           version: serverVer,
           localLength
-        }, 
-        {
-          onDownloadProgress(e){
-            _this.progress = Math.floor(e.loaded/e.total*100)
-          }
-        })
+        },
+          {
+            onDownloadProgress (e) {
+              _this.progress = Math.floor(e.loaded / e.total * 100)
+            }
+          })
         await db.transaction("rw", db.idols, db.dataver, function () {
           db.idols.bulkPut(data)
           db.dataver.put({ ver: 'current', currentVersion: serverVer })
         })
         this.$store.commit('sendMessage', { text: 'update success' })
-        this.$store.dispatch('submit',[])
+        this.$store.dispatch('submit', [])
       } else {
         this.$store.commit('sendMessage', { text: 'idol data is new' })
       }
@@ -119,10 +139,33 @@ html {
 }
 *::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background:  #bd237f;
+  background: #bd237f;
 }
 *::-webkit-scrollbar-track {
   border-radius: 5px;
+}
+.filter-divider {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.filter-divider hr {
+  border-color: rgba(0, 0, 0, 0.12);
+  height: 0px;
+  max-height: 0px;
+  border-width: thin 0 0 0;
+  transition: inherit;
+}
+.filter-divider hr:first-of-type {
+  width: 20px;
+}
+.filter-divider hr:last-of-type {
+  flex-grow: 1;
+}
+.filter-divider div {
+  color: rgba(0, 0, 0, 0.438);
+  padding: 0 10px;
+  font-size: 12px;
 }
 </style>
 

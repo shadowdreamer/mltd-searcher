@@ -13,7 +13,7 @@
         :key="item.text" :color="item.color"
         dark label small>{{ item.text }}</v-chip>     
         </v-card-text>
-        <template  v-for="line in  ['rarity','idolType','extraType']">
+        <template  v-for="line in  ['rarity','idolType','extraType','customTag']">
         <div class="my-0 filter-divider" :key='line+1'> 
           <hr/><div> {{line.toUpperCase()}}</div><hr/>
         </div>  
@@ -25,6 +25,21 @@
         dark label small>{{ item.text }}</v-chip>
         </v-card-text>
         </template>
+        <div class="my-0 filter-divider"> 
+          <hr/><div>IDOL</div><hr/>
+        </div> 
+        <v-card-text class="py-1">        
+        <v-chip v-for="item in cut?idol.slice(0,idollength):idol" 
+        class="mr-2 mb-1" @click="selected.push(item)"
+        :key="item.text" :color="{
+          1:'red lighten-1',
+          2:'blue lighten-1',
+          3:'yellow darken-3'
+        }[item.idolType]"
+        v-show="!selected.includes(item)"
+        dark label small>{{ item.text }}</v-chip>
+        <v-chip label small @click.stop="cut=!cut" >show {{cut?'more':'less'}}</v-chip>
+        </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -40,9 +55,11 @@ import {mapState} from 'vuex'
 export default {
   data: () => ({
     selected:[],
+    idollength:13,
+    cut:true
   }),
   computed:{
-    ...mapState(['subItems'])
+    ...mapState(['subItems','idol'])
   },
   watch:{
     value(){
@@ -55,28 +72,6 @@ export default {
 }
 </script>
 <style>
-  .filter-divider{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .filter-divider hr{
-    border-color: rgba(0, 0, 0, 0.12);
-    height: 0px;
-    max-height: 0px;
-    border-width: thin 0 0 0;
-    transition: inherit;
-  }
-  .filter-divider hr:first-of-type{    
-    width: 20px;
-  }
-  .filter-divider hr:last-of-type{
-    flex-grow: 1
-  }
-  .filter-divider div{
-    color:  rgba(0, 0, 0, 0.438);
-    padding:0 10px;
-    font-size: 12px;
-  }
+
 </style>
 

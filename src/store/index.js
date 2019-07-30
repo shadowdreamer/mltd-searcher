@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { db } from '@/plugins/dexie'
-
+const idol = require('../idols.json')
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -10,6 +10,7 @@ export default new Vuex.Store({
         list: [],
         crrt: null,
         keywords: [],
+        idol,
         subItems: {
             rarity: [
                 { text: 'SSR', type: 'rarity', val: 4, color: 'red ldarken-1' },
@@ -30,8 +31,13 @@ export default new Vuex.Store({
                 { text: 'Fes', type: 'extraType', val: 4, color: 'pink darken-1' },
                 { text: '1st', type: 'extraType', val: 5, color: 'indigo darken-1' },
                 { text: '2nd', type: 'extraType', val: 7, color: 'indigo darken-1' },
+            ],
+            customTag:[
+                { text: '制服', type: 'custom', val: '制服', color: 'red darken-2' },
             ]
         },
+        sortby:'id',
+        isReverse:false,
     },
     mutations: {
         sendMessage: (state, msg) => {
@@ -39,14 +45,16 @@ export default new Vuex.Store({
             state.message = msg
         },
         updateList: (state, result) => {
-            state.list = result.reverse()
+            result = result.sort((a,b)=>b[state.sortby]-a[state.sortby])
+            state.isReverse?result = result.reverse():null;
+            state.list = result
         },
         setCrrt: (state, item) => {
             state.crrt = item
         },
         setKeywords: (state, payload) => {
             state.keywords = payload
-        }
+        },
     },
     actions: {
         async submit ({ commit }, ev) {
@@ -60,31 +68,50 @@ export default new Vuex.Store({
             for (let i of ev) {
                 filter[i.type] ? filter[i.type].push(i.val) : filter[i.type] = [i.val]
             }
-            const { idolId, rarity, idolType, extraType } = filter
+            const { idolId, rarity, idolType, extraType,custom } = filter
             let first = 
                 idolId ? 'idolId' : 
                 rarity ? 'rarity' : 
                 idolType ? 'idolType' : 
-                extraType ? 'extraType' :''
+                extraType ? 'extraType' :null
+            
             let result = await db.transaction("r", db.idols, async function () {
-                return await db.idols.where(first).anyOf(filter[first])
-                    .filter(function (idol) {
-                        let list = [true];
-                        (!!idolId && first != 'idolId') ?
-                            list.push(idolId.includes(idol.idolId)) : '';
-                        (!!rarity && first != 'rarity') ?
-                            list.push(rarity.includes(idol.rarity)) : '';
-                        (!!idolType && first != 'idolType') ?
-                            list.push(idolType.includes(idol.idolType)) : '';
-                        (!!extraType && first != 'extraType') ?
-                            list.push(extraType.includes(idol.extraType)) : '';
-                        if([5,7].includes(idol.extraType)){
-                            list.push(extraType?extraType.includes(5)||extraType.includes(7):false )
-                        }
-                        return list.reduce((a, b) => a && b)
-                    }).toArray()
+                if(first){
+                    return await db.idols.where(first).anyOf(filter[first]).toArray()
+                }else{
+                    return await db.idols.toArray()
+                }
             })
-            commit('updateList', result)
+            commit('updateList', result.filter(idol=>{
+                let list = [true];
+                (!!idolId && first != 'idolId') ?
+                    list.push(idolId.includes(idol.idolId)) : '';
+                (!!rarity && first != 'rarity') ?
+                    list.push(rarity.includes(idol.rarity)) : '';
+                (!!idolType && first != 'idolType') ?
+                    list.push(idolType.includes(idol.idolType)) : '';
+                (!!extraType && first != 'extraType') ?
+                    list.push(extraType.includes(idol.extraType)) : '';
+                if([5,7].includes(idol.extraType)){
+                    list.push(extraType?extraType.includes(5)||extraType.includes(7):false )
+                }
+                if(custom){
+                    let customBool = true
+                    for(let val of custom ){
+                        customBool = idol.name.indexOf(val)>-1 && customBool
+                    }
+                    list.push(
+                        customBool
+                    )
+                }
+                return list.reduce((a, b) => a && b)
+            }))
+            // debugger
+        },
+        sort:({commit,state},{sortby,isReverse})=>{
+            state.sortby =  sortby
+            state.isReverse = isReverse
+            commit('updateList',state.list)
         }
     }
 })

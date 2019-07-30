@@ -9,6 +9,8 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "dexie": "^2.0.4",
+    "echarts": "^4.2.1",
+    "v-charts": "^1.19.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.7",
     "vue-virtual-scroller": "^1.0.0-rc.2",

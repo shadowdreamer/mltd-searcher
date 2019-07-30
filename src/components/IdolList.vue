@@ -13,7 +13,7 @@
       <template v-slot="{item}">
         <v-list-item @click.stop="checkCard(item)">
           <v-list-item-avatar>
-            <v-img :src="`https://storage.matsurihi.me/mltd/icon_l/${item.resourceId}_1.png`" >
+            <v-img :src="`/storage/icon_l/${item.resourceId}_1.png`" >
                  <template v-slot:placeholder>
                   <v-layout fill-height align-center justify-center ma-0>
                     <v-progress-circular  indeterminate color="primary"></v-progress-circular>

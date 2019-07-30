@@ -1,9 +1,8 @@
 <template>
   <v-combobox
     v-model="model"
-    @input="submit()"
     :filter="filter"
-    :items="items"
+    :items="idol.concat([{header:'click to submit'}])"
     :search-input.sync="search"
     hide-selected
     label="Search to apply options"
@@ -37,7 +36,7 @@
     <template v-slot:selection="{ item, parent, selected }">
       <v-chip
         v-if="item === Object(item)"
-        :color="`${item.color} lighten-3`"
+        :color="item.color"
         :input-value="selected"
         label
         small
@@ -48,7 +47,11 @@
       </v-chip>
     </template>
     <template v-slot:item="{ index, item }">
-      <v-chip :color="`${item.color} lighten-3`" dark label small>{{ item.text }}</v-chip>
+      <v-chip  :color="{
+          1:'red',
+          2:'blue lighten-1',
+          3:'yellow darken-2'
+        }[item.idolType]" dark label small>{{ item.text }}</v-chip>
     </template>
   </v-combobox>
 </template>
@@ -62,13 +65,6 @@ export default {
     colors: ["green", "purple", "indigo", "cyan", "teal", "orange"],
     editing: null,
     index: -1,
-    items: [
-      { text: "haruka", type: 'idolId', val: 1, color: "blue" },
-      { text: "chihaya", type: 'idolId', val: 2, color: "red" },
-      { text: "miki", type: 'idolId', val: 3, color: "red" },
-      { text: "yayoi", type: 'idolId', val: 4, color: "red" },
-      { header: 'click to apply items' },
-    ],
     nonce: 1,
     menu: false,
     model: [],
@@ -83,22 +79,31 @@ export default {
         if (typeof v === "string") {
           v = {
             text: v,
+            val:v,
+            type:'custom',
             color: this.colors[this.nonce - 1]
           };
           this.nonce++;
         }
         return v;
       });
+      this.submit()
     },
     keywords(val){
       this.model = val
     }
   },
   computed:{
-    ...mapState(['keywords','subItems'])
+    ...mapState(['keywords','subItems','idol'])
   },
   methods: {
     submit () {
+      for(let val of this.model){
+        if(typeof val === "string"){
+          return
+        }
+      }
+      // console.log(this.model)
       if (this.locker) {
         this.$store.dispatch('submit', this.model)
         this.locker = false
@@ -116,7 +121,7 @@ export default {
     filter (item, queryText, itemText) {
       if (item.header) return true
       const hasValue = val => (val != null ? val : "")
-      const text = hasValue(itemText)
+      const text = hasValue(itemText)+hasValue(item.spell)
       const query = hasValue(queryText)
       return (
         text

@@ -19,7 +19,12 @@ export default new Router({
       path: '/card/:id',
       name: 'card',
       component: ()=>import('@/views/CardDetail.vue')
-    }
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: ()=>import('@/views/About.vue')
+    },
   ],
   scrollBehavior ( ) {
     return { x: 0, y: 0 }

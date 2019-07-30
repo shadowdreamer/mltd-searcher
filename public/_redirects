@@ -1,3 +1,6 @@
-/version  https://api.matsurihi.me/mltd/v1/version/latest 200
+/mltd/*  https://api.matsurihi.me/mltd/v1/:splat 200
+/storage/* https://storage.matsurihi.me/mltd/:splat 301
 /my-mltd  https://mltd-api.dovahkiin.top/.netlify/functions/server 200
 /*  /index.html 200
+
+https://elastic-golick-ce9d4a.netlify.com/* https://mltd.dovahkiin.top/:splat 301!
