@@ -23,7 +23,8 @@
       <v-flex xs12>
         <v-banner>
           <p class="body-2 grey--text">{{idol.awakeningText}}</p>
-          <p class="text-right caption grey--text">Release:{{idol.addDate.slice(0,10)}}</p>
+          <p class="text-right caption grey--text">Release:
+            {{idol.addDate?idol.addDate.slice(0,10):'2017-6-29'}}</p>
         </v-banner>
       </v-flex>
       <v-flex xs12 class="mt-2" v-for="(awake,i) in ['','Awakened']" :key="i">
@@ -35,7 +36,7 @@
           </div>
           <v-layout row wrap class="px-4 py-3">
             <v-flex xs4 md3>
-              <v-card flat>
+              <v-card flat class="pl-3">
                 <v-img
                   @click="checkImg(`/storage/card/${idol.resourceId}_${i}_b.png`)"
                   :src="`/storage/card/${idol.resourceId}_${i}_a.png`"
@@ -51,62 +52,36 @@
             <v-flex xs8 md3>
               <v-card flat>
                 <v-card-text
-                  class="mt-0 pt-0 caption darken-4"
+                  class="mt-0 pt-0 caption darken-4 pr-0"
                   v-html="idol['flavorText'+awake].replace(/\n/g,'<br/>')"
                 ></v-card-text>
               </v-card>
             </v-flex>
             <v-flex xs12 md6 >
-              <v-card flat>
+              <v-card flat class="pl-3">
                 <v-layout row wrap>
-                  <v-flex xs6 class="pa-3">
+                  <v-flex xs4 class="pl-2">
+                    <StatusPanel :rows="[
+                    {type:'dance',val:idol['danceMax'+awake]},
+                    {type:'visual',val:idol['visualMax'+awake]},
+                    {type:'vocal',val:idol['vocalMax'+awake]}
+                    ]"/>
+                  </v-flex>
+                  <v-flex xs8class="pl-3">
                     <v-card-text>
-                    <p>levelMax：{{idol['levelMax'+awake]}}</p>
-                    <p>dance:{{idol['danceMax'+awake]}}</p>
-                    <p>visual:{{idol['visualMax'+awake]}}</p>
-                    <p>vocal:{{idol['vocalMax'+awake]}}</p>                      
+                    <p><v-chip label small>levelMax</v-chip> {{idol['levelMax'+awake]}}</p>
+                    <p><v-chip color="#8fd9fd" dark label small>DANCE</v-chip>{{idol['danceMax'+awake]}}</p>
+                    <p><v-chip color="#ff9933" dark label small>VISUAL</v-chip>{{idol['visualMax'+awake]}}</p>
+                    <p><v-chip color="#ff7266" dark label small>VOCAL</v-chip>{{idol['vocalMax'+awake]}}</p>                      
                     </v-card-text>
                   </v-flex>
-                  <v-flex xs6>
-                    <StatusPanel/>
-                  </v-flex>
+                  
                 </v-layout>
               </v-card>
             </v-flex>
           </v-layout>
         </v-card>
       </v-flex>
-      <!-- <v-flex xs12 class="mt-2">
-        <v-card v-if="idol.resourceId">
-          <div class="mb-1 mt-0 filter-divider">
-            <hr />
-            <div>after awaken</div>
-            <hr />
-          </div>
-          <v-layout row wrap class="px-4 py-3">
-            <v-flex xs4>
-               <v-card flat>
-              <v-img
-                @click="checkImg(`/storage/card/${idol.resourceId}_1_b.png`)"
-                :src="`/storage/card/${idol.resourceId}_1_a.png`"
-              >
-                <template v-slot:placeholder>
-                  <v-layout fill-height align-center justify-center ma-0>
-                    <v-progress-circular size="50" indeterminate color="primary"></v-progress-circular>
-                  </v-layout>
-                </template>
-              </v-img>
-               </v-card>
-            </v-flex>
-            <v-flex xs8>
-              <v-card flat>
-                <v-card-text class="mt-0 pt-0 caption darken-4"
-                v-html="idol.flavorTextAwakened.replace(/\n/g,'<br/>')"></v-card-text>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-card>
-      </v-flex>-->
       <v-flex xs12 md7 class="mt-2" v-if="costumes.length > 0">
         <v-card>
           <div class="mb-1 mt-0 filter-divider">
