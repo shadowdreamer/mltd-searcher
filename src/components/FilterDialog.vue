@@ -10,7 +10,11 @@
         <div v-show="selected.length === 0 ">none selected</div>
         <v-chip v-for="(item,i) in selected" 
         class="mr-2 mb-1" @click="selected.splice(i,1)"
-        :key="item.text" :color="item.color"
+        :key="item.text" :color="item.color?item.color:{
+          1:'red',
+          2:'blue lighten-1',
+          3:'yellow darken-2'
+        }[item.idolType]"
         dark label small>{{ item.text }}</v-chip>     
         </v-card-text>
         <template  v-for="line in  ['rarity','idolType','extraType','customTag']">

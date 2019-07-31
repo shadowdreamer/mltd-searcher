@@ -36,7 +36,11 @@
     <template v-slot:selection="{ item, parent, selected }">
       <v-chip
         v-if="item === Object(item)"
-        :color="item.color"
+        :color="item.color?item.color:{
+          1:'red',
+          2:'blue lighten-1',
+          3:'yellow darken-2'
+        }[item.idolType]"
         :input-value="selected"
         label
         small

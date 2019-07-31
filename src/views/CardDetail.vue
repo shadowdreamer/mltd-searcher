@@ -21,22 +21,22 @@
         </v-carousel>
       </v-flex>
       <v-flex xs12>
-        <v-banner>
+        <v-banner v-ripple="{class: `primary--text`}">
           <p class="body-2 grey--text">{{idol.awakeningText}}</p>
-          <p class="text-right caption grey--text">Release:
+          <p class="text-right caption grey--text mb-0">Release:
             {{idol.addDate?idol.addDate.slice(0,10):'2017-6-29'}}</p>
         </v-banner>
       </v-flex>
       <v-flex xs12 class="mt-2" v-for="(awake,i) in ['','Awakened']" :key="i">
         <v-card>
-          <div class="mb-1 mt-0 filter-divider">
+          <div v-show="awake" class="mb-1 mt-0 filter-divider">
             <hr />
             <div>{{awake}}</div>
             <hr />
           </div>
           <v-layout row wrap class="px-4 py-3">
             <v-flex xs4 md3>
-              <v-card flat class="pl-3">
+              <v-card flat class="px-3">
                 <v-img
                   @click="checkImg(`/storage/card/${idol.resourceId}_${i}_b.png`)"
                   :src="`/storage/card/${idol.resourceId}_${i}_a.png`"
@@ -53,6 +53,7 @@
               <v-card flat>
                 <v-card-text
                   class="mt-0 pt-0 caption darken-4 pr-0"
+                  v-ripple="{class: `primary--text`}"
                   v-html="idol['flavorText'+awake].replace(/\n/g,'<br/>')"
                 ></v-card-text>
               </v-card>
@@ -69,14 +70,36 @@
                   </v-flex>
                   <v-flex xs8class="pl-3">
                     <v-card-text>
-                    <p><v-chip label small>levelMax</v-chip> {{idol['levelMax'+awake]}}</p>
-                    <p><v-chip color="#8fd9fd" dark label small>DANCE</v-chip>{{idol['danceMax'+awake]}}</p>
-                    <p><v-chip color="#ff9933" dark label small>VISUAL</v-chip>{{idol['visualMax'+awake]}}</p>
-                    <p><v-chip color="#ff7266" dark label small>VOCAL</v-chip>{{idol['vocalMax'+awake]}}</p>                      
+                    <p><span class="status-label">levelMax</span> 
+                    {{idol['levelMax'+awake]}}</p>
+                    <p><span class="status-label" style="background-color:#8fd9fd">DANCE</span>{{idol['danceMax'+awake]}}</p>
+                    <p><span class="status-label" style="background-color:#ff9933">VISUAL</span>{{idol['visualMax'+awake]}}</p>
+                    <p><span class="status-label" style="background-color:#ff7266">VOCAL</span>{{idol['vocalMax'+awake]}}</p>                      
                     </v-card-text>
-                  </v-flex>
-                  
+                  </v-flex>                  
                 </v-layout>
+              </v-card>
+            </v-flex>
+            <v-flex xs12 md6>
+              <v-card flat>
+                <v-card-text class="pb-0">
+                    <p class="mb-1"><span class="status-label" 
+                    style="background-color:rgb(76, 76, 76)">Center Effect Name</span>
+                    {{idol.centerEffectName}}</p>                      
+                    <v-divider></v-divider>
+                    <p>{{idol.centerEffect.description}}</p>
+                </v-card-text>
+              </v-card>
+            </v-flex>
+            <v-flex xs12 md6>
+              <v-card flat>
+              <v-card-text class="pb-0">
+                    <p class="mb-1"><span class="status-label" 
+                    style="background-color:rgb(76, 76, 76)">Skill Name</span>
+                    {{idol.skillName}}</p>                      
+                    <v-divider></v-divider>
+                    <p>{{idol.skill[0].description.replace('{0}',idol.skill[0].probability)}}</p>
+                </v-card-text>
               </v-card>
             </v-flex>
           </v-layout>
@@ -259,3 +282,16 @@ export default {
   }
 }
 </script>
+<style>
+  .status-label{
+    display: inline-block;
+    text-align: center;
+    padding: 2px 8px 0px;
+    margin-right: 18px;
+    min-width: 80px;
+    background-color: rgb(122, 122, 122);
+    color: #fff;
+    font-size: 13px;
+    border-radius: 3px;
+  }
+</style>

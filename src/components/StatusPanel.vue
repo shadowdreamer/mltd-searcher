@@ -34,7 +34,7 @@ export default {
         label:{
           show:false
         },
-        radius: 65,
+        radius: 56,
         offsetY: 90,
         offserX:50
       }

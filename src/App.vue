@@ -97,6 +97,7 @@ export default {
       let serverVer = await this.checkVersion()
       if (serverVer) {
         this.bottomSheet = true
+        this.message = 'pending'
         this.$store.commit('sendMessage', { text: 'updating idol data' })
         const { data } = await this.$axios.post("/my-mltd", {
           version: serverVer,
@@ -104,6 +105,7 @@ export default {
         },
           {
             onDownloadProgress (e) {
+              _this.message = 'downloading'
               _this.progress = Math.floor(e.loaded / e.total * 100)
             }
           })
