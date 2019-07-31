@@ -1,0 +1,14 @@
+{
+  "name": "MLTD DateBase",
+  "short_name": "MLTD BD",
+  "icons": [
+    {
+      "src": "./img/icons/favicon.ico",
+      "sizes": "32x32 48x48 128x128 256x256"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#a6126a",
+  "theme_color": "#a6126a"
+}

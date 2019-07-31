@@ -17,6 +17,12 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: { '^/storage': '' }
       },
+      //https://webview-dot-theaterdays.appspot.com/api/info?type=3&cursor=&platform=google
+      '/news-mltd':{
+        target:'https://mltd.dovahkiin.top/news-mltd',
+        changeOrigin: true,
+        pathRewrite: { '^/news-mltd': '' }
+      }
     }
   },
   productionSourceMap: false

@@ -10,6 +10,7 @@
     "core-js": "^2.6.5",
     "dexie": "^2.0.4",
     "echarts": "^4.2.1",
+    "register-service-worker": "^1.6.2",
     "v-charts": "^1.19.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.7",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
     "@vue/cli-service": "^3.7.0",
+    "@vue/cli-plugin-pwa": "^3.9.0",
     "axios": "^0.18.0",
     "sass": "^1.17.4",
     "sass-loader": "^7.1.0",

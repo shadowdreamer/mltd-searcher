@@ -6,6 +6,7 @@ import router from './router'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 import VueVirtualScroller from 'vue-virtual-scroller'
 import vuetify from './plugins/vuetify';
+import './registerServiceWorker';
 
 Vue.use(VueVirtualScroller)
 

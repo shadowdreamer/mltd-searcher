@@ -22,17 +22,16 @@
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" fixed temporary>
       <v-list nav>
-        <v-list-item link to="/">
+        <v-list-item link :to="link.to" 
+        v-for="link in [
+        {to:'/',icon:'dashboard',text:'Home'},
+        {to:'/gamenews',icon:'description',text:'Game News'},
+        {to:'/about',icon:'mdi-help-box',text:'About'}
+        ]" :key="link.text">
           <v-list-item-icon>
-            <v-icon>dashboard</v-icon>
+            <v-icon>{{link.icon}}</v-icon>
           </v-list-item-icon>
-          <v-list-item-title>Home</v-list-item-title>
-        </v-list-item>
-        <v-list-item link to="/about">
-          <v-list-item-icon>
-            <v-icon>mdi-help-box</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>About</v-list-item-title>
+          <v-list-item-title>{{link.text}}</v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

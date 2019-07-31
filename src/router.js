@@ -21,6 +21,11 @@ export default new Router({
       component: ()=>import('@/views/CardDetail.vue')
     },
     {
+      path: '/gamenews',
+      name: 'gamenews',
+      component: ()=>import('@/views/GameNews.vue')
+    },
+    {
       path: '/about',
       name: 'about',
       component: ()=>import('@/views/About.vue')

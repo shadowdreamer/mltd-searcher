@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout v-if="idol.resourceId" row wrap>
+    <v-layout v-if="idol.resourceId" row wrap class="mt-2" >
       <v-flex xs12 v-if="idol.rarity === 4 && [0,4].includes(idol.extraType)">
         <v-carousel cycle :height="carouselHeight" hide-delimiter-background>
           <v-carousel-item
