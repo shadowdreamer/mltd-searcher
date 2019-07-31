@@ -80,7 +80,7 @@
                 </v-layout>
               </v-card>
             </v-flex>
-            <v-flex xs12 md6>
+            <v-flex xs12 md6 v-if="idol.rarity!==1">
               <v-card flat>
                 <v-card-text class="pb-0">
                     <p class="mb-1"><span class="status-label" 
@@ -91,7 +91,7 @@
                 </v-card-text>
               </v-card>
             </v-flex>
-            <v-flex xs12 md6>
+            <v-flex xs12 md6 v-if="idol.rarity!==1">
               <v-card flat>
               <v-card-text class="pb-0">
                     <p class="mb-1"><span class="status-label" 
