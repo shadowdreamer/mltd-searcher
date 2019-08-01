@@ -15,7 +15,7 @@
     {"type":"idolId","val":14,"text":"春日未来","idolType":1,"spell":"kasugamirai"},
     {"type":"idolId","val":15,"text":"最上静香","idolType":2,"spell":"mogamishizuka"},
     {"type":"idolId","val":16,"text":"伊吹翼","idolType":3,"spell":"ibukitsubasa"},
-    {"type":"idolId","val":17,"text":"田中琴葉","idolType":3,"spell":"tanakakotoha"},
+    {"type":"idolId","val":17,"text":"田中琴葉","idolType":1,"spell":"tanakakotoha"},
     {"type":"idolId","val":18,"text":"島原エレナ","idolType":3,"spell":"jimabara erena elena"},
     {"type":"idolId","val":19,"text":"佐竹美奈子","idolType":1,"spell":"satakeminako minaco"},
     {"type":"idolId","val":20,"text":"所恵美","idolType":2,"spell":"kotomegumi"},

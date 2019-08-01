@@ -47,7 +47,9 @@
           </template>
         </v-img>
         <v-card-title class>{{checking.title}}</v-card-title>
-        <v-card-text v-html="checking.body"></v-card-text>
+        <div style="font-size:12px;color:#666;padding:0 40px;text-align:end;">
+          {{checking.open_date}}</div>
+        <v-card-text v-html="htmlModify(checking.body)"></v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -75,16 +77,23 @@ export default {
         this.announce_list = this.announce_list.concat(data.announce_list)
         this.cursor = data.cursor
         this.loading = false
+        this.fail = false
       } catch (error) {
         this.fail = true
         this.loading = false
       }
     },
+    htmlModify(str){
+      str = str.replace(/browser:/g,'')
+      str = str.replace(/_self/g,'_blank')
+      str = str.replace(/<img src="([^"]*)"[^>]*>/g,function(match,p1){return `<img src="news-img/edi/${p1.split('/').pop()}" style="width:100%"/>`})
+      return str
+    }
   },
   filters: {
     imgProxy (url) {
       return 'news-img/' + url.split('/').pop()
-    }
+    },
   },
   mounted () {
     this.loadNews()

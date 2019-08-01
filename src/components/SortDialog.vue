@@ -5,7 +5,7 @@
         <v-card-title class="primary white--text headline">SORT</v-card-title>
         <v-card-text class="pb-0 ">
             <v-layout wrap>
-              <v-flex xs12 sm4 md4>
+              <v-flex xs12>
                 <v-radio-group v-model="sortby" row>
                   <v-radio class="mb-3" v-for="item in keys" :key="item.val" 
                   :label="item.text" color="primary" :value="item.val"></v-radio>
@@ -15,7 +15,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-text>
-            <v-checkbox label="Reverse result" v-model="isReverse"></v-checkbox>
+            <v-checkbox color="primary" label="Reverse result" v-model="isReverse"></v-checkbox>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -36,7 +36,7 @@ export default {
     keys:[
         {text:'default',val:'id'},
         {text:'idol',val:'idolId'},
-        {text:'volcal',val:'volcalMaxAwakened'},
+        {text:'vocal',val:'vocalMaxAwakened'},
         {text:'dance',val:'danceMaxAwakened'},
         {text:'visual',val:'visualMaxAwakened'},
     ]

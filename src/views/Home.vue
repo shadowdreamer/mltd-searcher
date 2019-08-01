@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <SearchBar v-model="keywords" />
-    <div class="counter">find {{$store.state.list.length}} results</div>
+    <div class="counter">found {{$store.state.list.length}} results</div>
     <IdolList />
   </div>
 </template>
