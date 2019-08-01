@@ -36,7 +36,6 @@
       <v-card v-if="!!checking">
         <v-img
           class="white--text"
-          min-height="150px"
           :src="checking.head_image_url|imgProxy"
           v-if="!!checking.head_image_url"
         >
