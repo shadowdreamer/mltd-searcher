@@ -27,6 +27,10 @@
         </v-btn>
       </div>
       <div class="filter-divider mt-5">
+        <hr /> <div>copyright</div> <hr />
+      </div>
+       The copyright to THE IDOLM@STER contents belongs to BANDAI NAMCO Entertainment Inc.
+      <div class="filter-divider mt-5">
         <hr /> <div>licenses</div> <hr />
       </div>
       <v-btn small text href="https://opensource.org/licenses/MIT"  target="_blank">MIT 
