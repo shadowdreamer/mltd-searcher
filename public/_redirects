@@ -2,7 +2,7 @@
 /storage/* https://storage.matsurihi.me/mltd/:splat 301
 /my-mltd  https://mltd-api.dovahkiin.top/.netlify/functions/server 200
 /news-mltd https://webview-dot-theaterdays.appspot.com/api/info 200
-/news-img https://storage.googleapis.com/image-theaterdays/ 200
+/news-img/* https://storage.googleapis.com/image-theaterdays/:splat 301
 /*  /index.html 200
 
 https://elastic-golick-ce9d4a.netlify.com/* https://mltd.dovahkiin.top/:splat 301!
