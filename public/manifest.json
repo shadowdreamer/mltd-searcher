@@ -3,8 +3,12 @@
   "short_name": "MLTD BD",
   "icons": [
     {
-      "src": "./img/icons/favicon.ico",
+      "src": "./icons/favicon.ico",
       "sizes": "32x32 48x48 128x128 256x256"
+    },
+    {
+      "src": "./icons/logo.png",
+      "sizes": "144x144"
     }
   ],
   "start_url": "/",

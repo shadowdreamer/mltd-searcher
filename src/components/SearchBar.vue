@@ -80,7 +80,7 @@ export default {
     model (val, prev) {
       if (val.length === prev.length) return;
       this.model = val.map(v => {
-        if (typeof v === "string") {
+        if (typeof v === "string") { 
           v = {
             text: v,
             val:v,
@@ -92,6 +92,7 @@ export default {
         return v;
       });
       this.submit()
+      this.search = null
     },
     keywords(val){
       this.model = val
