@@ -22,7 +22,12 @@ module.exports = {
         target:'https://mltd.dovahkiin.top/news-mltd',
         changeOrigin: true,
         pathRewrite: { '^/news-mltd': '' }
-      }
+      },
+      '/news-img':{
+        target:'https://mltd.dovahkiin.top/news-img',
+        changeOrigin: true,
+        pathRewrite: { '^/news-img': '' }
+      },
     }
   },
   productionSourceMap: false

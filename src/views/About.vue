@@ -7,7 +7,7 @@
       </div>
       <div class="subtitle-1">
         <p>Thanks to</p>
-        <span class="princess">P</span>ublic<span class="princess">R</span>ESTful Application Programming<span class="princess"> In</span>terfa<span class="princess">ce</span><span class="princess">S</span>erie<span class="princess">s</span>.
+        <span class="princess">P</span>ublic<span class="princess">R</span>ESTful Application Programming<span class="princess"> In</span>terfa<span class="princess">ce</span><span class="princess"> S</span>erie<span class="princess">s</span>.
       </div>
       <div class="text-center mb-5">
         <v-btn color="#ea5b76" dark target="_blank" 

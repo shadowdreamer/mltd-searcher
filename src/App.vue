@@ -10,6 +10,8 @@
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title v-if="!!$store.state.crrt && $route.name==='card'">{{$store.state.crrt.name}}</v-toolbar-title>
+      <v-toolbar-title v-if="$route.name==='gamenews'">Game News</v-toolbar-title>
+      <v-toolbar-title v-if="$route.name==='about'">About</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-btn text small @click="sortdialog=true" v-show="$route.name === 'home'">
