@@ -15,7 +15,8 @@
           </v-card-text>
         </v-card>
       </v-flex>
-      <v-flex xs12 md6>
+      <v-flex xs12>
+        <v-alert v-if="fail" type="error">Fail in loading game news,please retry later.</v-alert>
         <div class="text-center mt-5">
           <v-btn
             color="primary"
