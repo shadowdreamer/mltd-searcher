@@ -8,5 +8,6 @@ host at [![Netlify Status](https://api.netlify.com/api/v1/badges/b5e60ef1-c0dc-4
 ```
 yarn install & yarn serve
 ```
-## 
+## license
+MIT
  
