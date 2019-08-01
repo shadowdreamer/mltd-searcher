@@ -25,7 +25,7 @@ export default {
     rows:Array
   },
   data: () => ({
-      colors:['#8fd9fd','#ff7266','#ff9933'],
+      colors:['#8fd9fd','#ff9933','#ff7266'],
       chartSettings:{
         hoverAnimation:false,
         labelLine:{
