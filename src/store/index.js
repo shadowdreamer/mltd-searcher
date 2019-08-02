@@ -24,7 +24,7 @@ export default new Vuex.Store({
                 { text: 'ANGEL', type: 'idolType', val: 3, color: 'yellow darken-2' },
                 { text: 'EX', type: 'idolType', val: 5, color: 'green darken-1' },
             ],
-            extraType:[
+            extraType: [
                 { text: 'Normal', type: 'extraType', val: 0, color: 'blue-grey darken-1' },
                 { text: 'PST Rank', type: 'extraType', val: 2, color: 'amber darken-2' },
                 { text: 'PST Point', type: 'extraType', val: 3, color: 'amber' },
@@ -32,12 +32,13 @@ export default new Vuex.Store({
                 { text: '1st', type: 'extraType', val: 5, color: 'indigo darken-1' },
                 { text: '2nd', type: 'extraType', val: 7, color: 'indigo darken-1' },
             ],
-            customTag:[
+            customTag: [
                 { text: '制服', type: 'custom', val: '制服', color: 'red darken-2' },
-            ]
+            ],
+
         },
-        sortby:'id',
-        isReverse:false,
+        sortby: 'id',
+        isReverse: false,
     },
     mutations: {
         sendMessage: (state, msg) => {
@@ -45,8 +46,8 @@ export default new Vuex.Store({
             state.message = msg
         },
         updateList: (state, result) => {
-            result = result.sort((a,b)=>b[state.sortby]-a[state.sortby])
-            state.isReverse?result = result.reverse():null;
+            result = result.sort((a, b) => b[state.sortby] - a[state.sortby])
+            state.isReverse ? result = result.reverse() : null;
             state.list = result
         },
         setCrrt: (state, item) => {
@@ -57,7 +58,7 @@ export default new Vuex.Store({
         },
     },
     actions: {
-        async submit ({ commit }, ev) {
+        async submit ({ state, commit }, ev) {
             commit('setKeywords', ev)
             if (ev.length === 0) {
                 let result = await db.idols.toArray()
@@ -68,22 +69,36 @@ export default new Vuex.Store({
             for (let i of ev) {
                 filter[i.type] ? filter[i.type].push(i.val) : filter[i.type] = [i.val]
             }
-            const { idolId, rarity, idolType, extraType,custom } = filter
-            let first = 
-                idolId ? 'idolId' : 
-                rarity ? 'rarity' : 
-                idolType ? 'idolType' : 
-                extraType ? 'extraType' :null
-            
+            let { idolId, rarity, idolType, extraType, custom } = filter
+            let first =
+                idolId ? 'idolId' :
+                    rarity ? 'rarity' :
+                        idolType ? 'idolType' :
+                            extraType ? 'extraType' : null
             let result = await db.transaction("r", db.idols, async function () {
-                if(first){
+                if (first) {
                     return await db.idols.where(first).anyOf(filter[first]).toArray()
-                }else{
+                } else {
                     return await db.idols.toArray()
                 }
             })
-            commit('updateList', result.filter(idol=>{
+            commit('updateList', result.filter(idol => {
                 let list = [true];
+                let customBool = true
+                let customIdolId = []
+                let customPST = false
+                if (custom) {
+                    for (let val of custom) {
+                        customBool = idol.name.toLowerCase().indexOf(val.toLowerCase()) > -1 && customBool
+                        state.idol.forEach(el => {
+                            if ((el.spell + el.text).indexOf(val.toLowerCase()) > -1) {
+                                customIdolId.push(el.val)
+                            }
+                        });
+                        if (val.toLowerCase() === 'pst') customPST = [2, 3].includes(idol.extraType)
+                    }
+                    list.push(customIdolId.includes(idol.idolId) || customBool || customPST)
+                }
                 (!!idolId && first != 'idolId') ?
                     list.push(idolId.includes(idol.idolId)) : '';
                 (!!rarity && first != 'rarity') ?
@@ -92,26 +107,16 @@ export default new Vuex.Store({
                     list.push(idolType.includes(idol.idolType)) : '';
                 (!!extraType && first != 'extraType') ?
                     list.push(extraType.includes(idol.extraType)) : '';
-                if([5,7].includes(idol.extraType)){
-                    list.push(extraType?extraType.includes(5)||extraType.includes(7):false )
-                }
-                if(custom){
-                    let customBool = true
-                    for(let val of custom ){
-                        customBool = idol.name.indexOf(val)>-1 && customBool
-                    }
-                    list.push(
-                        customBool
-                    )
+                if ([5, 7].includes(idol.extraType)) {
+                    list.push(extraType ? extraType.includes(5) || extraType.includes(7) : false)
                 }
                 return list.reduce((a, b) => a && b)
             }))
-            // debugger
         },
-        sort:({commit,state},{sortby,isReverse})=>{
-            state.sortby =  sortby
+        sort: ({ commit, state }, { sortby, isReverse }) => {
+            state.sortby = sortby
             state.isReverse = isReverse
-            commit('updateList',state.list)
+            commit('updateList', state.list)
         }
     }
 })

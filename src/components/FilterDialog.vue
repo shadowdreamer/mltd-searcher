@@ -18,7 +18,7 @@
         dark label small>{{ item.text }}</v-chip>
         </v-card-text>   
         <v-card-text>
-        <template  v-for="line in  ['rarity','idolType','extraType','customTag']">
+        <template  v-for="line in  ['rarity','idolType','extraType']">
         <div class="my-0 filter-divider" :key='line+1'> 
           <hr/><div> {{line.toUpperCase()}}</div><hr/>
         </div> 
@@ -68,7 +68,7 @@ export default {
   },
   watch:{
     value(){
-      this.selected = this.$store.state.keywords
+      this.selected = JSON.parse(JSON.stringify(this.$store.state.keywords)) 
     }
   },
   props:{

@@ -2,7 +2,7 @@
   <v-combobox
     v-model="model"
     :filter="filter"
-    :items="idol.concat([{header:'click to submit'}])"
+    :items="idol.concat(allSubItem).concat([{header:'click to submit'}])"
     :search-input.sync="search"
     hide-selected
     label="Search to apply options"
@@ -16,7 +16,7 @@
         <v-icon>clear_all</v-icon>
       </v-btn>
     </template>
-    <template v-slot:prepend-item>
+    <!-- <template v-slot:prepend-item>
       <v-card flat class="mx-2">
         <template  v-for="line in  ['rarity','idolType','extraType']">
         <div class="my-0 filter-divider" :key='line+1'> 
@@ -32,7 +32,7 @@
         </template>
         <v-divider></v-divider>
       </v-card>
-    </template>
+    </template> -->
     <template v-slot:selection="{ item, parent, selected }">
       <v-chip
         v-if="item === Object(item)"
@@ -51,7 +51,7 @@
       </v-chip>
     </template>
     <template v-slot:item="{ index, item }">
-      <v-chip  :color="{
+      <v-chip  :color="item.color?item.color:{
           1:'red',
           2:'blue lighten-1',
           3:'yellow darken-2'
@@ -81,6 +81,11 @@ export default {
       if (val.length === prev.length) return;
       this.model = val.map(v => {
         if (typeof v === "string") { 
+          for(let item of this.allSubItem){
+            if(v.toLowerCase() == item.text.toLowerCase()){
+              return item
+            }
+          }
           v = {
             text: v,
             val:v,
@@ -99,7 +104,14 @@ export default {
     }
   },
   computed:{
-    ...mapState(['keywords','subItems','idol'])
+    ...mapState(['keywords','subItems','idol']),
+    allSubItem(){
+      let tmp = []
+      for(let prop in this.subItems){
+        tmp = tmp.concat(this.subItems[prop])
+      }
+      return tmp
+    }
   },
   methods: {
     submit () {

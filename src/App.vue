@@ -13,13 +13,14 @@
       <v-toolbar-title v-if="$route.name==='gamenews'">Game News</v-toolbar-title>
       <v-toolbar-title v-if="$route.name==='about'">About</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-toolbar-items>
-        <v-btn text small @click="sortdialog=true" v-show="$route.name === 'home'">
+      <v-toolbar-items v-show="$route.name === 'home'">
+        <v-btn text small @click="sortdialog=true" >
           <v-icon>sort</v-icon>sort
         </v-btn>
-        <v-btn text small @click="filterdialog=true" v-show="$route.name === 'home'">
+        <v-btn text small @click="filterdialog=true">
           <v-icon>filter_list</v-icon>filter
         </v-btn>
+        <Help/>
       </v-toolbar-items>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" fixed temporary>
@@ -76,6 +77,7 @@ export default {
     FilterDialog: () => import("@/components/FilterDialog"),
     SortDialog: () => import("@/components/SortDialog"),
     BottomSheet: () => import("@/components/BottomSheet"),
+    Help: () => import("@/components/Help"),
   },
   methods: {
     async checkVersion () {

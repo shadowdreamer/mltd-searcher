@@ -25,6 +25,7 @@
             :disabled="loading"
             :loading="loading"
             @click="loadNews"
+            v-show="!!cursor || loading"
           >
             load more
             <v-icon>refresh</v-icon>
@@ -49,7 +50,7 @@
         <v-card-title class>{{checking.title}}</v-card-title>
         <div style="font-size:12px;color:#666;padding:0 40px;text-align:end;">
           {{checking.open_date}}</div>
-        <v-card-text v-html="htmlModify(checking.body)"></v-card-text>
+        <v-card-text style="word-break:break-all;" v-html="htmlModify(checking.body)"></v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
