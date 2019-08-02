@@ -11,9 +11,9 @@
       key-field="id"
     >
       <template v-slot="{item}">
-        <v-list-item @click.stop="checkCard(item)">
-          <v-list-item-avatar>
-            <v-img :src="`/storage/icon_l/${item.resourceId}_1.png`" >
+        <v-list-item  @click.stop="checkCard(item)">
+          <v-list-item-avatar tile >
+            <v-img :src="`/storage/icon_l/${item.resourceId}_1.png`">
                  <template v-slot:placeholder>
                   <v-layout fill-height align-center justify-center ma-0>
                     <v-progress-circular  indeterminate color="primary"></v-progress-circular>
@@ -22,7 +22,9 @@
             </v-img>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title v-html="item.name"></v-list-item-title>
+            <v-list-item-title>
+              <RarityRabel :rarity="item.rarity"/>
+              {{item.name}}</v-list-item-title>             
           </v-list-item-content>
         </v-list-item>
       </template>
@@ -40,6 +42,9 @@ export default {
       bar: {}
     }
   }),
+  components:{
+    RarityRabel:()=>import("@/components/RarityRabel")
+  },
   computed: {
     ...mapState(['list'])
   },
