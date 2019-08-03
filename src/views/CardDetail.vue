@@ -22,7 +22,7 @@
       </v-flex>
       <v-flex xs12>
         <v-banner v-ripple="{class: `primary--text`}">
-          <p class="body-2 grey--text">{{pnameModify(idol.awakeningText)}}</p>
+          <p class="body-2 grey--text" v-html="pnameModify(idol.awakeningText)"></p>
           <p class="text-right caption grey--text mb-0">Release:
             {{idol.addDate?idol.addDate.slice(0,10):'2017-6-29'}}</p>
         </v-banner>

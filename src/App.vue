@@ -13,6 +13,7 @@
       <v-toolbar-title v-if="$route.name==='gamenews'">Game News</v-toolbar-title>
       <v-toolbar-title v-if="$route.name==='config'">Config</v-toolbar-title>
       <v-toolbar-title v-if="$route.name==='about'">About</v-toolbar-title>
+      <v-toolbar-title v-if="$route.name==='feedback'">FeedBack</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items v-show="$route.name === 'home'">
         <SortDialog/>
@@ -27,6 +28,7 @@
         {to:'/',icon:'dashboard',text:'Home'},
         {to:'/gamenews',icon:'description',text:'Game News'},
         {to:'/config',icon:'settings',text:'Config'},
+        {to:'/feedback',icon:'feedback',text:'FeedBack'},
         {to:'/about',icon:'mdi-help-box',text:'About'}
         ]" :key="link.text">
           <v-list-item-icon>

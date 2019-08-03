@@ -4,7 +4,7 @@
 			<v-flex xs12>
 				<v-card>
 					<v-card-text>
-						<v-text-field outlined label="producer name" v-model="pname"></v-text-field>
+						<v-text-field label="producer name" hint="not too long" v-model="pname" counter></v-text-field>
 						
 					</v-card-text>
 					<v-divider></v-divider>
@@ -29,6 +29,10 @@ export default {
 	},
 	methods:{
 		confirm(){
+			if(/[<>\/\\\*\^\&\(\)\%\$\#\{\}\[\]\+\=]/.test(this.pname)){
+				this.$store.commit('sendMessage', {text: 'invalid symbol!',type:'error'})
+				return
+			}
 			localStorage.setItem('pname',this.pname)
 			this.$store.commit('sendMessage', {text: 'edit success'})
 		}
