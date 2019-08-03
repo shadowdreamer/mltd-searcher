@@ -127,6 +127,7 @@ export default {
 <style>
 html {
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;  /* 对iOS设备的idols列表滑动优化 */
 }
 * {
   scrollbar-color: #bd237f #f2f2f2;

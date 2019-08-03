@@ -151,7 +151,7 @@
         <v-card v-if="idol.resourceId">
           <div class="mb-1 mt-0 filter-divider">
             <hr />
-            <div>this idol's onther cards</div>
+            <div>this idol's other cards</div>
             <hr />
           </div>
           <v-list>
