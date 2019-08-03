@@ -3,12 +3,16 @@
   "short_name": "MLTD DB",
   "icons": [
     {
-      "src": "./icons/favicon.ico",
-      "sizes": "32x32 48x48 128x128 256x256"
+      "src": "./icons/logo-196.png",
+      "sizes": "196x196"
     },
     {
-      "src": "./icons/logo.png",
+      "src": "./icons/logo-144.png",
       "sizes": "144x144"
+    },
+    {
+      "src": "./icons/logo-128.png",
+      "sizes": "128x128"
     }
   ],
   "start_url": "/",

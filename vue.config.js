@@ -30,5 +30,15 @@ module.exports = {
       },
     }
   },
+  pwa:{
+    themeColor:'#a6126a',
+    msTileColor:"#a6126a",
+    iconPaths:{
+      favicon32: 'icons/logo-32.png',
+      favicon16: 'icons/logo-16.png',
+      appleTouchIcon: 'icons/apple-touch-icon-152x152.png',
+      msTileImage: 'icons/logo-144.png'
+    }
+  },
   productionSourceMap: false
 }
