@@ -1,4 +1,3 @@
-const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 module.exports = {
   devServer: {
     proxy: {
@@ -40,5 +39,6 @@ module.exports = {
       msTileImage: 'icons/logo-144.png'
     }
   },
+  transpileDependencies: ['vuetify'],
   productionSourceMap: false
 }

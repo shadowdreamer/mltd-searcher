@@ -13,5 +13,5 @@ export default new Vuetify({
         primary: '#a6126a'
       },
     },
-  },
+  }
 });

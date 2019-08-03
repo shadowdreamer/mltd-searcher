@@ -34,8 +34,7 @@ export default new Vuex.Store({
             ],
             customTag: [
                 { text: '制服', type: 'custom', val: '制服', color: 'red darken-2' },
-            ],
-
+            ]
         },
         sortby: 'id',
         isReverse: false,
@@ -55,7 +54,7 @@ export default new Vuex.Store({
         },
         setKeywords: (state, payload) => {
             state.keywords = payload
-        },
+        }
     },
     actions: {
         async submit ({ state, commit }, ev) {
