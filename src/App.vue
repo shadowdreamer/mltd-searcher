@@ -11,6 +11,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title v-if="!!$store.state.crrt && $route.name==='card'">{{$store.state.crrt.name}}</v-toolbar-title>
       <v-toolbar-title v-if="$route.name==='gamenews'">Game News</v-toolbar-title>
+      <v-toolbar-title v-if="$route.name==='config'">Config</v-toolbar-title>
       <v-toolbar-title v-if="$route.name==='about'">About</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items v-show="$route.name === 'home'">
@@ -25,6 +26,7 @@
         v-for="link in [
         {to:'/',icon:'dashboard',text:'Home'},
         {to:'/gamenews',icon:'description',text:'Game News'},
+        {to:'/config',icon:'settings',text:'Config'},
         {to:'/about',icon:'mdi-help-box',text:'About'}
         ]" :key="link.text">
           <v-list-item-icon>

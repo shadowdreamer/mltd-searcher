@@ -22,7 +22,7 @@
       </v-flex>
       <v-flex xs12>
         <v-banner v-ripple="{class: `primary--text`}">
-          <p class="body-2 grey--text">{{idol.awakeningText}}</p>
+          <p class="body-2 grey--text">{{pnameModify(idol.awakeningText)}}</p>
           <p class="text-right caption grey--text mb-0">Release:
             {{idol.addDate?idol.addDate.slice(0,10):'2017-6-29'}}</p>
         </v-banner>
@@ -54,7 +54,7 @@
                 <v-card-text
                   class="mt-0 pt-0 caption darken-4 pr-0"
                   v-ripple="{class: `primary--text`}"
-                  v-html="idol['flavorText'+awake].replace(/\n/g,'<br/>')"
+                  v-html="pnameModify(idol['flavorText'+awake])"
                 ></v-card-text>
               </v-card>
             </v-flex>
@@ -125,7 +125,7 @@
                 <v-layout row wrap>
                   <v-flex xs8 md9>
                     <v-card flat>
-                      <v-card-text v-html="item.description.replace(/\n/g,'<br/>')"></v-card-text>
+                      <v-card-text v-html="pnameModify(item.description)"></v-card-text>
                     </v-card>
                   </v-flex>
                   <v-flex xs4 md3 class="pr-3">
@@ -234,6 +234,10 @@ export default {
     }
   },
   methods: {
+    pnameModify(text){
+      let pname = localStorage.getItem('pname') || 'プロデューサー'
+      return text.replace(/{\$P\$}/g,pname).replace(/\n/g,'<br/>')
+    },
     checkImg (url) {
       window.open(
         url,
