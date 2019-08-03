@@ -1,6 +1,10 @@
 <template>
-  <v-layout row justify-center>
-    <v-dialog :value="value" persistent max-width="800">
+    <v-dialog v-model="dialog" persistent max-width="800">
+      <template v-slot:activator="{ on }">
+        <v-btn text v-on="on" >
+          <v-icon>sort</v-icon>sort
+        </v-btn> 
+      </template>
       <v-card>
         <v-card-title class="primary white--text headline">SORT</v-card-title>
         <v-card-text class="pb-0 ">
@@ -20,17 +24,17 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click.native="$emit('close')">cancel</v-btn>
-          <v-btn color="primary" text @click.native="submit();$emit('close')">Apply</v-btn>
+          <v-btn color="primary" text @click.native="dialog = false">cancel</v-btn>
+          <v-btn color="primary" text @click.native="submit()">Apply</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-layout>
 </template>
 <script>
 import { mapState } from 'vuex'
 export default {
   data: () => ({
+    dialog:'',
     sortby: '',
     isReverse:'',
     keys:[
@@ -41,12 +45,10 @@ export default {
         {text:'visual',val:'visualMaxAwakened'},
     ]
   }),
-  props: {
-    value: Boolean
-  },
   methods:{
     submit(){
       this.$store.dispatch('sort',{sortby:this.sortby,isReverse:this.isReverse})
+      this.dialog = false
     }
   }
 }

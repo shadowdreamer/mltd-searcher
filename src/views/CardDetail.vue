@@ -167,7 +167,10 @@
                   </v-img>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                  <v-list-item-title v-html="item.name"></v-list-item-title>
+                  <v-list-item-title>
+                    <RarityRabel :rarity="item.rarity"/>
+                    {{item.name}}
+                  </v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </template>
@@ -186,6 +189,7 @@ import { db } from "@/plugins/dexie"
 export default {
   name: "card",
   components:{
+    RarityRabel:()=>import("@/components/RarityRabel"),
     StatusPanel:()=>import('@/components/StatusPanel')
   },
   data: () => ({

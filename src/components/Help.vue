@@ -18,8 +18,9 @@
 					try input 'ロコ' and press  <v-icon samll>subdirectory_arrow_left</v-icon> on your keyborad<br/>
 					try input 'koro' and press  <v-icon samll>subdirectory_arrow_left</v-icon> on your keyborad<br/>
 					try input '制服' and press  <v-icon samll>subdirectory_arrow_left</v-icon> on your keyborad<br/>
-          *you can press 'Esc' or tap on the top bar spance to close the menu
+          *you can press 'Esc' or tap on the top bar's space to close the menu
 				</v-card-text>
+        <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn text small color="warning" @click.native="dialog = false">Close</v-btn>

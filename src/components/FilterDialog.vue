@@ -1,6 +1,10 @@
 <template>
-  <v-layout row justify-center>
-    <v-dialog :value="value" scrollable persistent max-width="800">
+    <v-dialog v-model="dialog" scrollable persistent max-width="800">
+      <template v-slot:activator="{ on }">
+        <v-btn text v-on="on">
+          <v-icon>filter_list</v-icon>filter
+        </v-btn>
+      </template>
       <v-card>
         <v-card-title class="primary white--text headline">FILTER</v-card-title>
         <v-card-text>
@@ -48,12 +52,11 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" text @click.native="$emit('close')">cancel</v-btn>
-          <v-btn color="primary" text @click.native="$store.dispatch('submit',selected);$emit('close')">Apply</v-btn>
+          <v-btn color="primary" text @click.native="dialog=false">cancel</v-btn>
+          <v-btn color="primary" text @click.native="$store.dispatch('submit',selected);dialog=false">Apply</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-layout>
 </template>
 <script>
 import {mapState} from 'vuex'
@@ -61,18 +64,16 @@ export default {
   data: () => ({
     selected:[],
     idollength:13,
-    cut:true
+    cut:true,
+    dialog:false,
   }),
   computed:{
     ...mapState(['subItems','idol'])
   },
   watch:{
-    value(){
+    dialog(){
       this.selected = JSON.parse(JSON.stringify(this.$store.state.keywords)) 
     }
-  },
-  props:{
-      value:Boolean
   }
 }
 </script>

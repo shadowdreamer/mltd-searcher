@@ -23,7 +23,7 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title>
-              <!-- <RarityRabel :rarity="item.rarity"/> -->
+              <RarityRabel :rarity="item.rarity"/>
               {{item.name}}</v-list-item-title>             
           </v-list-item-content>
         </v-list-item>
@@ -43,7 +43,7 @@ export default {
     }
   }),
   components:{
-    // RarityRabel:()=>import("@/components/RarityRabel")
+    RarityRabel:()=>import("@/components/RarityRabel")
   },
   computed: {
     ...mapState(['list'])

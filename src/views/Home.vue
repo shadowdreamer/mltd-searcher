@@ -1,7 +1,10 @@
 <template>
   <div class="home">
     <SearchBar v-model="keywords" />
-    <div class="counter">found {{$store.state.list.length}} results</div>
+      <div class="counter">
+        <div>Sort By {{$store.state.sortby}}</div>
+        <div>Found {{$store.state.list.length}} results</div>      
+      </div>
     <IdolList />
   </div>
 </template>
@@ -23,11 +26,12 @@ export default {
 </script>
 <style scoped>
 .counter {
-  margin-top: -24px;
+  margin-top: -25px;
   font-size: 14px;
+  padding: 0 15px;
   color: rgba(0, 0, 0, 0.74);
-  padding: 0 8px;
-  text-align: end;
+  display: flex;
+  justify-content:space-between;
 }
 </style>
 

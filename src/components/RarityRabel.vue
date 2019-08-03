@@ -25,14 +25,23 @@ export default {
         color: #fff;
         width: 36px;
         text-align: center;
-        margin: 0 6px 0 0
+        margin: 0 6px 0 0;
+        text-shadow:.5px 0.5px 1px #000
    } 
    .rarity-label-SSR{
        background: linear-gradient(135deg,
-         rgb(255, 224, 157),rgb(243, 94, 243),rgb(74, 152, 216),rgb(219, 247, 61));
+         rgb(255, 224, 157),rgb(243, 94, 243),rgb(0, 140, 255),rgb(219, 247, 61));
    }
    .rarity-label-SR{
        background: linear-gradient(135deg,
-         rgb(249, 255, 200),rgb(76, 137, 243),rgb(253, 255, 108));
+         rgb(245, 242, 50),rgb(231, 211, 54),rgb(240, 240, 35),rgb(253, 239, 37));
+   }
+   .rarity-label-R{
+       background: linear-gradient(135deg,
+         rgb(107, 107, 107),rgb(68, 68, 68));
+   }
+   .rarity-label-N{
+       background: linear-gradient(135deg,
+         rgb(170, 170, 170),rgb(121, 120, 120));
    }
 </style>

@@ -14,12 +14,8 @@
       <v-toolbar-title v-if="$route.name==='about'">About</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items v-show="$route.name === 'home'">
-        <v-btn text small @click="sortdialog=true" >
-          <v-icon>sort</v-icon>sort
-        </v-btn>
-        <v-btn text small @click="filterdialog=true">
-          <v-icon>filter_list</v-icon>filter
-        </v-btn>
+        <SortDialog/>
+        <FilterDialog/>
         <Help/>
       </v-toolbar-items>
     </v-app-bar>
@@ -44,9 +40,7 @@
           <router-view></router-view>
         </v-flex>
       </v-layout>
-      <SnackBar />
-      <FilterDialog v-model="filterdialog" @close="filterdialog=false" />
-      <SortDialog v-model="sortdialog" @close="sortdialog=false" />
+      <SnackBar />      
       <BottomSheet v-model="bottomSheet" :progress="progress" :message="message" />
       <v-footer absolute>
         <v-spacer></v-spacer>
@@ -65,8 +59,6 @@ import { db } from '@/plugins/dexie'
 export default {
   name: "App",
   data: () => ({
-    filterdialog: false,
-    sortdialog: false,
     bottomSheet: false,
     message: '',
     progress: 0,
