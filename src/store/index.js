@@ -45,11 +45,18 @@ export default new Vuex.Store({
             state.message = msg
         },
         updateList: (state, result) => {
-            result = result.sort((a, b) => b[state.sortby] - a[state.sortby])
+            if(state.sortby == 'total'){
+                result = result.sort((a, b) => 
+                (b.vocalMaxAwakened+b.danceMaxAwakened+b.visualMaxAwakened)-
+                (a.vocalMaxAwakened+a.danceMaxAwakened+a.visualMaxAwakened))
+            }else{
+                result = result.sort((a, b) => b[state.sortby] - a[state.sortby])
+            }
             state.isReverse ? result = result.reverse() : null;
             state.list = result
         },
         setCrrt: (state, item) => {
+            if(!item.wish)item.wish=null
             state.crrt = item
         },
         setKeywords: (state, payload) => {
@@ -116,6 +123,15 @@ export default new Vuex.Store({
             state.sortby = sortby
             state.isReverse = isReverse
             commit('updateList', state.list)
+        },
+        async toggleLove ({ commit, state }) {
+            if (state.crrt.wish == 1) {
+                state.crrt.wish = null
+                await db.idols.put(state.crrt)
+            } else {
+                state.crrt.wish = 1
+                await db.idols.put(state.crrt)
+            }
         }
     }
 })

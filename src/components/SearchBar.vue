@@ -16,23 +16,6 @@
         <v-icon>clear_all</v-icon>
       </v-btn>
     </template>
-    <!-- <template v-slot:prepend-item>
-      <v-card flat class="mx-2">
-        <template  v-for="line in  ['rarity','idolType','extraType']">
-        <div class="my-0 filter-divider" :key='line+1'> 
-          <hr/><div> {{line.toUpperCase()}}</div><hr/>
-        </div>  
-        <v-card-text class="py-1 px-2" :key='line'>
-        <v-chip v-for="item in subItems[line]" 
-        class="mr-2 mb-1" @click="model.push(item);submit()"
-        :key="item.text" :color="item.color"
-        v-show="!model.includes(item)"
-        dark label small>{{ item.text }}</v-chip>
-        </v-card-text>
-        </template>
-        <v-divider></v-divider>
-      </v-card>
-    </template> -->
     <template v-slot:selection="{ item, parent, selected }">
       <v-chip
         v-if="item === Object(item)"

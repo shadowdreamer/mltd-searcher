@@ -43,6 +43,7 @@ export default {
         {text:'vocal',val:'vocalMaxAwakened'},
         {text:'dance',val:'danceMaxAwakened'},
         {text:'visual',val:'visualMaxAwakened'},
+        {text:'total',val:'total'}
     ]
   }),
   methods:{

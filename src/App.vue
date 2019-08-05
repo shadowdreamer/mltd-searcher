@@ -10,9 +10,7 @@
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title v-if="!!$store.state.crrt && $route.name==='card'">{{$store.state.crrt.name}}</v-toolbar-title>
-      <v-toolbar-title v-if="$route.name==='gamenews'">Game News</v-toolbar-title>
-      <v-toolbar-title v-if="$route.name==='config'">Config</v-toolbar-title>
-      <v-toolbar-title v-if="$route.name==='about'">About</v-toolbar-title>
+      <v-toolbar-title v-else>{{$route.meta.text}}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items v-show="$route.name === 'home'">
         <SortDialog/>
@@ -22,13 +20,8 @@
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" fixed temporary>
       <v-list nav>
-        <v-list-item link :to="link.to" 
-        v-for="link in [
-        {to:'/',icon:'dashboard',text:'Home'},
-        {to:'/gamenews',icon:'description',text:'Game News'},
-        {to:'/config',icon:'settings',text:'Config'},
-        {to:'/about',icon:'mdi-help-box',text:'About'}
-        ]" :key="link.text">
+        <v-list-item link :to="link.path" 
+        v-for="link in links" :key="link.text">
           <v-list-item-icon>
             <v-icon>{{link.icon}}</v-icon>
           </v-list-item-icon>
@@ -58,14 +51,24 @@
 
 <script>
 import { db } from '@/plugins/dexie'
+import routes from '@/router/routes'
 export default {
   name: "App",
   data: () => ({
     bottomSheet: false,
     message: '',
     progress: 0,
-    drawer: false
+    drawer: false,
+    routes
   }),
+  computed:{
+    links(){
+      return Array.from(routes.filter(el=>!!el.meta),el=>({
+        path:el.path,
+        ...el.meta
+      }))
+    }
+  },
   components: {
     SnackBar: () => import("@/components/SnackBar"),
     FilterDialog: () => import("@/components/FilterDialog"),

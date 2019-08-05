@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout v-if="idol.resourceId" row wrap class="mt-2" >
+    <v-layout v-if="idol.resourceId" row wrap class="mt-2">
       <v-flex xs12 v-if="idol.rarity === 4 && [0,4].includes(idol.extraType)">
         <v-carousel cycle :height="carouselHeight" hide-delimiter-background>
           <v-carousel-item
@@ -21,10 +21,18 @@
         </v-carousel>
       </v-flex>
       <v-flex xs12>
-        <v-banner v-ripple="{class: `primary--text`}">
+        <v-banner Single-line :sticky="false">
           <p class="body-2 grey--text" v-html="pnameModify(idol.awakeningText)"></p>
-          <p class="text-right caption grey--text mb-0">Release:
-            {{idol.addDate?idol.addDate.slice(0,10):'2017-6-29'}}</p>
+          <p class="text-right caption grey--text mb-0">
+            Release:
+            {{idol.addDate?idol.addDate.slice(0,10):'2017-6-29'}}
+          </p>
+          <template v-slot:actions>
+            <v-btn @click="wished=!wished;$store.dispatch('toggleLove')" text color="red">
+              <v-icon>              
+              {{wished?'favorite':'favorite_border'}}
+              </v-icon></v-btn>
+          </template>
         </v-banner>
       </v-flex>
       <v-flex xs12 class="mt-2" v-for="(awake,i) in ['','Awakened']" :key="i">
@@ -58,47 +66,65 @@
                 ></v-card-text>
               </v-card>
             </v-flex>
-            <v-flex xs12 md6 >
+            <v-flex xs12 md6>
               <v-card flat class="pl-3">
                 <v-layout row wrap>
                   <v-flex xs4 class="pl-2">
-                    <StatusPanel :rows="[
+                    <StatusPanel
+                      :rows="[
                     {type:'dance',val:idol['danceMax'+awake]},
                     {type:'visual',val:idol['visualMax'+awake]},
                     {type:'vocal',val:idol['vocalMax'+awake]}
-                    ]"/>
+                    ]"
+                    />
                   </v-flex>
                   <v-flex xs8class="pl-3">
                     <v-card-text>
-                    <p><span class="status-label">levelMax</span> 
-                    {{idol['levelMax'+awake]}}</p>
-                    <p><span class="status-label" style="background-color:#8fd9fd">DANCE</span>{{idol['danceMax'+awake]}}</p>
-                    <p><span class="status-label" style="background-color:#ff9933">VISUAL</span>{{idol['visualMax'+awake]}}</p>
-                    <p><span class="status-label" style="background-color:#ff7266">VOCAL</span>{{idol['vocalMax'+awake]}}</p>                      
+                      <p>
+                        <span class="status-label">levelMax</span>
+                        {{idol['levelMax'+awake]}}
+                      </p>
+                      <p>
+                        <span class="status-label" style="background-color:#8fd9fd">DANCE</span>
+                        {{idol['danceMax'+awake]}}
+                      </p>
+                      <p>
+                        <span class="status-label" style="background-color:#ff9933">VISUAL</span>
+                        {{idol['visualMax'+awake]}}
+                      </p>
+                      <p>
+                        <span class="status-label" style="background-color:#ff7266">VOCAL</span>
+                        {{idol['vocalMax'+awake]}}
+                      </p>
                     </v-card-text>
-                  </v-flex>                  
+                  </v-flex>
                 </v-layout>
               </v-card>
             </v-flex>
             <v-flex xs12 md6 v-if="idol.rarity!==1">
               <v-card flat>
                 <v-card-text class="pb-0">
-                    <p class="mb-1"><span class="status-label" 
-                    style="background-color:rgb(76, 76, 76)">Center Effect Name</span>
-                    {{idol.centerEffectName}}</p>                      
-                    <v-divider></v-divider>
-                    <p>{{idol.centerEffect.description}}</p>
+                  <p class="mb-1">
+                    <span
+                      class="status-label"
+                      style="background-color:rgb(76, 76, 76)"
+                    >Center Effect Name</span>
+                    {{idol.centerEffectName}}
+                  </p>
+                  <v-divider></v-divider>
+                  <p>{{idol.centerEffect.description}}</p>
                 </v-card-text>
               </v-card>
             </v-flex>
             <v-flex xs12 md6 v-if="idol.rarity!==1">
               <v-card flat>
-              <v-card-text class="pb-0">
-                    <p class="mb-1"><span class="status-label" 
-                    style="background-color:rgb(76, 76, 76)">Skill Name</span>
-                    {{idol.skillName}}</p>                      
-                    <v-divider></v-divider>
-                    <p>{{idol.skill[0].description.replace('{0}',idol.skill[0].probability)}}</p>
+                <v-card-text class="pb-0">
+                  <p class="mb-1">
+                    <span class="status-label" style="background-color:rgb(76, 76, 76)">Skill Name</span>
+                    {{idol.skillName}}
+                  </p>
+                  <v-divider></v-divider>
+                  <p>{{idol.skill[0].description.replace('{0}',idol.skill[0].probability)}}</p>
                 </v-card-text>
               </v-card>
             </v-flex>
@@ -157,7 +183,7 @@
           <v-list>
             <template v-for="item in sameIdol">
               <v-list-item :key="item.id" @click="$router.push({path:`/card/${item.id}`})">
-                <v-list-item-avatar>
+                <v-list-item-avatar tile>
                   <v-img :src="`/storage/icon_l/${item.resourceId}_1.png`">
                     <template v-slot:placeholder>
                       <v-layout fill-height align-center justify-center ma-0>
@@ -168,7 +194,7 @@
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>
-                    <RarityRabel :rarity="item.rarity"/>
+                    <RarityRabel :rarity="item.rarity" />
                     {{item.name}}
                   </v-list-item-title>
                 </v-list-item-content>
@@ -188,14 +214,15 @@
 import { db } from "@/plugins/dexie"
 export default {
   name: "card",
-  components:{
-    RarityRabel:()=>import("@/components/RarityRabel"),
-    StatusPanel:()=>import('@/components/StatusPanel')
+  components: {
+    RarityRabel: () => import("@/components/RarityRabel"),
+    StatusPanel: () => import('@/components/StatusPanel')
   },
   data: () => ({
     loading: false,
     costumeTab: null,
     tab: null,
+    wished:false,
     sameIdol: [],
     sameDate: [],
   }),
@@ -234,9 +261,9 @@ export default {
     }
   },
   methods: {
-    pnameModify(text){
+    pnameModify (text) {
       let pname = localStorage.getItem('pname') || 'プロデューサー'
-      return text.replace(/{\$P\$}/g,pname).replace(/\n/g,'<br/>')
+      return text.replace(/{\$P\$}/g, pname).replace(/\n/g, '<br/>')
     },
     checkImg (url) {
       window.open(
@@ -281,8 +308,8 @@ export default {
         let idol = localData || data[0]
         this.$store.commit("setCrrt", idol)
         this.loading = false
-        return
       }
+      this.wished = !!this.idol.wish
     }
   },
   mounted () {
@@ -291,15 +318,15 @@ export default {
 }
 </script>
 <style>
-  .status-label{
-    display: inline-block;
-    text-align: center;
-    padding: 2px 8px 0px;
-    margin-right: 18px;
-    min-width: 80px;
-    background-color: rgb(122, 122, 122);
-    color: #fff;
-    font-size: 13px;
-    border-radius: 3px;
-  }
+.status-label {
+  display: inline-block;
+  text-align: center;
+  padding: 2px 8px 0px;
+  margin-right: 18px;
+  min-width: 80px;
+  background-color: rgb(122, 122, 122);
+  color: #fff;
+  font-size: 13px;
+  border-radius: 3px;
+}
 </style>
