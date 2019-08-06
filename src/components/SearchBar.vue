@@ -10,9 +10,11 @@
     small-chips
     solo
     autocomplete="off"
+    @blur="$emit('searchblur')"
+    @focus="$emit('searchfocus')"
   >
     <template v-slot:append>
-      <v-btn icon small @click="model=[]">
+      <v-btn icon small @click.self="model=[];">
         <v-icon>clear_all</v-icon>
       </v-btn>
     </template>
@@ -34,16 +36,21 @@
       </v-chip>
     </template>
     <template v-slot:item="{ index, item }">
-      <v-chip  :color="item.color?item.color:{
+      <v-chip
+        :color="item.color?item.color:{
           1:'red',
           2:'blue lighten-1',
           3:'yellow darken-2'
-        }[item.idolType]" dark label small>{{ item.text }}</v-chip>
+        }[item.idolType]"
+        dark
+        label
+        small
+      >{{ item.text }}</v-chip>
     </template>
   </v-combobox>
 </template>
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 export default {
   name: "searchbar",
   data: () => ({
@@ -63,16 +70,16 @@ export default {
     model (val, prev) {
       if (val.length === prev.length) return;
       this.model = val.map(v => {
-        if (typeof v === "string") { 
-          for(let item of this.allSubItem){
-            if(v.toLowerCase() == item.text.toLowerCase()){
+        if (typeof v === "string") {
+          for (let item of this.allSubItem) {
+            if (v.toLowerCase() == item.text.toLowerCase()) {
               return item
             }
           }
           v = {
             text: v,
-            val:v,
-            type:'custom',
+            val: v,
+            type: 'custom',
             color: this.colors[this.nonce - 1]
           };
           this.nonce++;
@@ -82,15 +89,15 @@ export default {
       this.submit()
       this.search = null
     },
-    keywords(val){
+    keywords (val) {
       this.model = val
     }
   },
-  computed:{
-    ...mapState(['keywords','subItems','idol']),
-    allSubItem(){
+  computed: {
+    ...mapState(['keywords', 'subItems', 'idol']),
+    allSubItem () {
       let tmp = []
-      for(let prop in this.subItems){
+      for (let prop in this.subItems) {
         tmp = tmp.concat(this.subItems[prop])
       }
       return tmp
@@ -98,8 +105,8 @@ export default {
   },
   methods: {
     submit () {
-      for(let val of this.model){
-        if(typeof val === "string"){
+      for (let val of this.model) {
+        if (typeof val === "string") {
           return
         }
       }
@@ -121,7 +128,7 @@ export default {
     filter (item, queryText, itemText) {
       if (item.header) return true
       const hasValue = val => (val != null ? val : "")
-      const text = hasValue(itemText)+hasValue(item.spell)
+      const text = hasValue(itemText) + hasValue(item.spell)
       const query = hasValue(queryText)
       return (
         text
@@ -132,8 +139,8 @@ export default {
     }
   },
   mounted () {
-     this.model = this.keywords
-     this.submit()
+    this.model = this.keywords
+    this.submit()
   }
 };
 </script>
