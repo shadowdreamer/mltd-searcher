@@ -59,17 +59,10 @@ export default {
       let {data} = await this.$axios('https://api.matsurihi.me/mltd/v1/lounges/search?name=' + this.text)
       for(let item of data){
         this.list.push(item)
-        await this.sleep(100)
+        await this.$sleep(100)
       }
       this.searching = false
     },
-    sleep (t) {
-      return new Promise(r => {
-        setTimeout(() => {
-          r();
-        }, t);
-      });
-    }
   }
 }
 </script>

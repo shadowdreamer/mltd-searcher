@@ -33,23 +33,16 @@ export default {
       if (this.list.length > 0) {
         this.snackbar = true
         this.crrt = this.list.splice(0, 1)[0]
-        await this.sleep(900)
+        await this.$sleep(900)
         if (this.list.length > 0) {
           this.snackbar = false
         }
-        await this.sleep(300)
+        await this.$sleep(300)
         this.dealMessage();
       } else {
         this.dealing = false;
       }
     },
-    sleep (t) {
-      return new Promise(r => {
-        setTimeout(() => {
-          r();
-        }, t);
-      });
-    }
   }
 };
 </script>

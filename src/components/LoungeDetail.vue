@@ -13,13 +13,15 @@
           <v-flex xs12>
             <p class="black--text body-1">{{data.comment}}</p>
           </v-flex>
-          <v-flex xs6>
-            <p>Master Name: {{data.masterName}}</p>
-            <p>Total Fans: {{data.fan}}</p>
-            <p>Create Date: {{data.createTime.slice(0,10)}}</p>
+          <v-flex xs12>
+            <p>Master Name: {{data.masterName}}</p>            
           </v-flex>
           <v-flex xs6>
             <p>Lounge ID: {{data.viewerId}}</p>
+            <p>Create Date: {{data.createTime.slice(0,10)}}</p>
+          </v-flex>
+          <v-flex xs6>
+            <p>Total Fans: {{data.fan}}</p>
             <p>Member: {{data.userCount}}/{{data.userCountLimit}}</p>
           </v-flex>
         </v-layout>
@@ -35,6 +37,7 @@
         @click="getEvent(data.viewerId)"
       >load lounge events</v-btn>
       <v-card-text v-show="!eventData.length==0">
+        <transition-group tag="div" name="event-list">
         <div class="event-list mb-3" v-for="item in eventData" :key="item.eventId">
           <p
             class="event-list-name pl-1 my-0 black--text text-no-wrap text-truncate"
@@ -48,6 +51,7 @@
             <div>Score:{{item.score}}</div>
           </div>
         </div>
+         </transition-group>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
@@ -100,6 +104,16 @@ export default {
 }
 </script>
 <style>
+.event-list-enter-active,
+.event-list-leave-active {
+  transition: all .3s ease-in;
+}
+.event-list-enter,
+.event-list-leave-to {
+  opacity: 0;
+  /* transform: translateX(30px); */
+  transform: scaleY(0.8)
+}
 .event-list-detail {
   font-size: 13px;
   display: flex;
