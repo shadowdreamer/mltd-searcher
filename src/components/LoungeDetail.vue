@@ -45,7 +45,7 @@
               Rank:
               <span :style="{color:rankColor(item.rank)}">{{item.rank}}</span>
             </div>
-            <div>Rcore:{{item.score}}</div>
+            <div>Score:{{item.score}}</div>
           </div>
         </div>
       </v-card-text>
