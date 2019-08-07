@@ -19,6 +19,14 @@
       </v-toolbar-items>
     </v-app-bar>
     <v-navigation-drawer v-model="drawer" fixed temporary>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            MLTD Datebase
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider></v-divider>
       <v-list nav>
         <v-list-item link :to="link.path" 
         v-for="link in links" :key="link.text">

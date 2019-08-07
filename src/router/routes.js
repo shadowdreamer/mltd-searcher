@@ -34,6 +34,15 @@ export default [
       }
     },
     {
+      path: '/lounge',
+      name: 'lounge',
+      component: ()=>import('@/views/Lounge.vue'),
+      meta:{
+        icon:'chat',
+        text:'Lounge'
+      }
+    },
+    {
       path: '/config',
       name: 'config',
       component: ()=>import('@/views/Config.vue'),
