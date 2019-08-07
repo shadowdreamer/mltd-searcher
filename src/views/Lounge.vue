@@ -82,7 +82,7 @@ export default {
 .list-leave-to {
   opacity: 0;
   /* transform: translateX(30px); */
-  transform: scale(1.2)
+  transform: scale(0.8)
 }
 .lounge-list {
   font-size: 14px;
