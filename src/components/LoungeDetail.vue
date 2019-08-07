@@ -1,16 +1,18 @@
 <template>
   <v-dialog :value="!!viewerId" scrollable max-width="800px" persistent>
-    <v-card v-if="!data" >
+    <v-card v-if="!data">
       <div class="text-center py-5">
-      <v-progress-circular indeterminate color="primary"></v-progress-circular>
+        <v-progress-circular indeterminate color="primary"></v-progress-circular>
       </div>
     </v-card>
     <v-card v-else>
       <v-card-title primary-title class="pb-0">{{data.name}}</v-card-title>
       <v-divider></v-divider>
       <v-card-title class="pb-0 pt-2 body-2">
-        <p class="black--text body-1">{{data.comment}}</p>
         <v-layout row wrap class="px-3">
+          <v-flex xs12>
+            <p class="black--text body-1">{{data.comment}}</p>
+          </v-flex>
           <v-flex xs6>
             <p>Master Name: {{data.masterName}}</p>
             <p>Total Fans: {{data.fan}}</p>
@@ -33,14 +35,19 @@
         @click="getEvent(data.viewerId)"
       >load lounge events</v-btn>
       <v-card-text v-show="!eventData.length==0">
-        <div class="event-list mb-3 " v-for="item in eventData" :key="item.eventId">
-          <p class="event-list-name pl-1 my-0 black--text text-no-wrap text-truncate">{{item.eventName}}</p>
+        <div class="event-list mb-3" v-for="item in eventData" :key="item.eventId">
+          <p
+            class="event-list-name pl-1 my-0 black--text text-no-wrap text-truncate"
+          >{{item.eventName}}</p>
           <div class="event-list-detail pl-3">
             <div>End date:{{item.summaryTime.slice(0,10)}}</div>
-            <div>Rank:<span :style="{color:rankColor(item.rank)}">{{item.rank}}</span></div>
+            <div>
+              Rank:
+              <span :style="{color:rankColor(item.rank)}">{{item.rank}}</span>
+            </div>
             <div>Rcore:{{item.score}}</div>
           </div>
-        </div>        
+        </div>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
@@ -60,8 +67,8 @@ export default {
   }),
   watch: {
     viewerId (val) {
-      if (!val){
-        this.data=null
+      if (!val) {
+        this.data = null
         this.eventData = []
         return
       }
@@ -69,13 +76,13 @@ export default {
     }
   },
   methods: {
-    rankColor(rank){
-       if(rank <=10 )return '#a6126b'
-       if(rank <=50 && rank>10 )return '#a6126bd2'
-       if(rank <=100 && rank>50 )return '#a6126ba6'
-       if(rank <=250 && rank>50 )return '#a6126b71'
-       if(rank <=500 && rank>250 )return '#a6126b49'
-       return 'ffffff49'
+    rankColor (rank) {
+      if (rank <= 10) return '#a6126b'
+      if (rank <= 50 && rank > 10) return '#a6126bd2'
+      if (rank <= 100 && rank > 50) return '#a6126ba6'
+      if (rank <= 250 && rank > 50) return '#a6126b71'
+      if (rank <= 500 && rank > 250) return '#a6126b49'
+      return 'ffffff49'
     },
     async getLounge (viewerId) {
       let { data } = await this.$axios('https://api.matsurihi.me/mltd/v1/lounges/' + this.viewerId)
@@ -93,12 +100,12 @@ export default {
 }
 </script>
 <style>
-  .event-list-detail{
-    font-size: 13px;
-    display: flex;
-    justify-content: space-between;
-  }
-  .event-list-name{
-    border-left: 6px #a6126bcc solid
-  }
+.event-list-detail {
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+}
+.event-list-name {
+  border-left: 6px #a6126bcc solid;
+}
 </style>
