@@ -101,8 +101,10 @@ export default {
     async getCards () {
       let _this = this
       let localLength = await db.idols.count()
-      if (localLength > 100) localLength += 100;
-      let serverVer = await this.checkVersion()
+      if (localLength > 100) localLength = 100; //just skip N and some R
+      // it will skip rank5 custom update, not a good way to slim the online data
+      // let serverVer = await this.checkVersion()
+      // if (localLength > 100) localLength += 100;
       if (serverVer) {
         this.bottomSheet = true
         this.message = 'pending'
