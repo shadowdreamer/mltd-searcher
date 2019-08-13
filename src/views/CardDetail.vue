@@ -180,9 +180,12 @@
             <div>this idol's other cards</div>
             <hr />
           </div>
+          <div v-show="loadingSame" class="text-center">
+            <v-progress-circular  indeterminate color="primary"></v-progress-circular>
+          </div>
           <v-list>
             <template v-for="item in sameIdol">
-              <v-list-item :key="item.id" @click="$router.push({path:`/card/${item.id}`})">
+              <v-list-item :key="item.id+item.rarity" @click="$router.push({path:`/card/${item.id}`})">
                 <v-list-item-avatar tile>
                   <v-img :src="`/storage/icon_l/${item.resourceId}_1.png`">
                     <template v-slot:placeholder>
@@ -220,6 +223,7 @@ export default {
   },
   data: () => ({
     loading: false,
+    loadingSame: false,
     costumeTab: null,
     tab: null,
     wished:false,
@@ -274,7 +278,7 @@ export default {
     },
     async getSameIdol () {
       await this.checkIdol()
-      let { idolId, addDate } = this.idol
+      let { idolId } = this.idol
       let id = this.routeId
       let sameIdol = await db.idols
         .where("idolId")
@@ -283,17 +287,13 @@ export default {
           return idol.id != id
         })
         .toArray()
-      this.sameIdol = sameIdol
-      if (addDate) {
-        let sameDate = await db.idols
-          .where('addDate')
-          .equals(addDate)
-          .filter(function (idol) {
-            return idol.id != id
-          })
-          .toArray()
-        this.sameDate = sameDate
+      if(sameIdol.length === 0){
+        this.loadingSame = true
+        let  { data } = await this.$axios(`/mltd/cards?idolId=${idolId}`)
+        sameIdol = data.filter((el,index,arr)=>el.id!== id)
+        this.loadingSame = false
       }
+      this.sameIdol = sameIdol      
     },
     async checkIdol () {
       let id = this.routeId
@@ -303,10 +303,12 @@ export default {
         let data = null;
         if (!localData) {
           this.loading = true
-          data = (await this.$axios(`/mltd/cards/${this.routeId}`)).data[0]
+          data = (await this.$axios(`/mltd/cards/${this.routeId}`)).data
         }
         let idol = localData || data[0]
+        console.log(idol)
         this.$store.commit("setCrrt", idol)
+        // debugger
         this.loading = false
       }
       this.wished = !!this.idol.wish
@@ -314,6 +316,7 @@ export default {
   },
   mounted () {
     this.getSameIdol()
+    window.db= db
   }
 }
 </script>

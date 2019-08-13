@@ -56,7 +56,7 @@ export default new Vuex.Store({
             state.list = result
         },
         setCrrt: (state, item) => {
-            if(!item.wish)item.wish=null
+            item &&  !item.wish && (item.wish=null)
             state.crrt = item
         },
         setKeywords: (state, payload) => {

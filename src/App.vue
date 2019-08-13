@@ -44,7 +44,7 @@
         </v-flex>
       </v-layout>
       <SnackBar />      
-      <BottomSheet v-model="bottomSheet" :progress="progress" :message="message" />
+     
       <v-footer absolute>
         <v-spacer></v-spacer>
         Data provider:
@@ -58,14 +58,10 @@
 </template>
 
 <script>
-import { db } from '@/plugins/dexie'
 import routes from '@/router/routes'
 export default {
   name: "App",
   data: () => ({
-    bottomSheet: false,
-    message: '',
-    progress: 0,
     drawer: false,
     routes
   }),
@@ -81,59 +77,13 @@ export default {
     SnackBar: () => import("@/components/SnackBar"),
     FilterDialog: () => import("@/components/FilterDialog"),
     SortDialog: () => import("@/components/SortDialog"),
-    BottomSheet: () => import("@/components/BottomSheet"),
     Help: () => import("@/components/Help"),
   },
   methods: {
-    async checkVersion () {
-      const serverVer = (await this.$axios("/mltd/version/latest")).data.res.updateTime
-      console.log(serverVer)
-      let current = await db.dataver.get({ ver: 'current' })
-      console.log(current)
-      if (!current) {
-        return serverVer
-      } else if (current.currentVersion != serverVer) {
-        return serverVer
-      } else {
-        return false
-      }
-    },
-    async getCards () {
-      let _this = this
-      let localLength = await db.idols.count()
-      if (localLength > 100) localLength = 100; //just skip N and some R
-      // it will skip rank5 custom update, not a good way to slim the online data
-      // let serverVer = await this.checkVersion()
-      // if (localLength > 100) localLength += 100;
-      if (serverVer) {
-        this.bottomSheet = true
-        this.message = 'pending'
-        this.$store.commit('sendMessage', { text: 'updating idol data' })
-        const { data } = await this.$axios.post("/my-mltd", {
-          version: serverVer,
-          localLength
-        },
-          {
-            onDownloadProgress (e) {
-              _this.message = 'downloading'
-              _this.progress = Math.floor(e.loaded / e.total * 100)
-            }
-          })
-        await db.transaction("rw", db.idols, db.dataver, function () {
-          db.idols.bulkPut(data)
-          db.dataver.put({ ver: 'current', currentVersion: serverVer })
-        })
-        this.$store.commit('sendMessage', { text: 'update success' })
-        this.$store.dispatch('submit', [])
-      } else {
-        this.$store.commit('sendMessage', { text: 'idol data is new' })
-      }
-      this.bottomSheet = false
-    },
+   
   },
   mounted () {
-    this.getCards()
-    window.db = db
+    
   }
 }
 </script>
