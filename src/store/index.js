@@ -17,6 +17,7 @@ export default new Vuex.Store({
                 { text: 'SR', type: 'rarity', val: 3, color: 'yellow darken-3' },
                 { text: 'R', type: 'rarity', val: 2, color: 'grey darken-2' },
                 { text: 'N', type: 'rarity', val: 1, color: 'grey' },
+                { text: 'Rank5', type: 'rank5', val: 1, color: 'blue-grey darken-2' },
             ],
             idolType: [
                 { text: 'PRINCESS', type: 'idolType', val: 1, color: 'red lighten-2' },
@@ -75,7 +76,7 @@ export default new Vuex.Store({
             for (let i of ev) {
                 filter[i.type] ? filter[i.type].push(i.val) : filter[i.type] = [i.val]
             }
-            let { idolId, rarity, idolType, extraType, custom } = filter
+            let { idolId, rarity, idolType, extraType, custom, rank5 } = filter
             let first =
                 idolId ? 'idolId' :
                     rarity ? 'rarity' :
@@ -115,6 +116,9 @@ export default new Vuex.Store({
                     list.push(extraType.includes(idol.extraType)) : '';
                 if ([5, 7].includes(idol.extraType)) {
                     list.push(extraType ? extraType.includes(5) || extraType.includes(7) : false)
+                }
+                if(rank5){
+                    list.push(!!idol.rank5Costume)
                 }
                 return list.reduce((a, b) => a && b)
             }))

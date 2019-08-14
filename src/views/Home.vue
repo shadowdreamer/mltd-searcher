@@ -14,6 +14,22 @@
     <IdolList />
     <v-overlay :z-index="1" :value="overlay" @click="overlay=false"></v-overlay>
     <BottomSheet v-model="bottomSheet" :progress="progress" :message="message" />
+    <v-dialog v-model="updateDialog" persistent max-width="600px">
+      <v-card>
+        <v-alert v-if="localLength==0" colored-border border="top" type="error" >
+          For the first time visit the site, please update the cards data, it will take a little time.
+        </v-alert>
+        <v-alert v-else colored-border border="top" type="warning" >
+          There are some update available probably,please update.
+        </v-alert>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="warning" @click="dismissUpdate" :disabled="localLength==0">next time</v-btn>
+          <v-btn color="primary" @click="getCards">update now</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 <script>
@@ -24,11 +40,13 @@ export default {
   data: () => ({
     overlay: false,
     keywords: [],
-    filterdialog: false,
     bottomSheet: false,
     message: '',
     progress: 0,
-    checking:false
+    checking: false,
+    updateDialog: false,
+    localLength:0,
+    serverVer:null
   }),
   components: {
     IdolList,
@@ -36,14 +54,15 @@ export default {
     SearchBar: () => import("@/components/SearchBar"),
   },
   methods: {
-     async checkVersion () {
-       this.checking = true
+    async checkVersion () {
+      if (!!sessionStorage.getItem('updated') || !!sessionStorage.getItem('dismissUpdate')) return
+      this.checking = true
       this.$store.commit('sendMessage', { text: 'checking idols data for search' })
       const serverVer = (await this.$axios("/mltd/version/latest")).data.res.updateTime
       console.log(serverVer)
       let current = await db.dataver.get({ ver: 'current' })
       console.log(current)
-      this.checking=false
+      this.checking = false
       if (!current) {
         return serverVer
       } else if (current.currentVersion != serverVer) {
@@ -52,40 +71,52 @@ export default {
         return false
       }
     },
-    async getCards () {
-      let _this = this
-      let localLength = await db.idols.count()
-      if (localLength > 100) localLength += 100;
-      //fix serverless proxy,now skip most of the local data and always update the rank5 cards,hope it work
+    async checkCards () {
       let serverVer = await this.checkVersion()
       if (serverVer) {
-        this.bottomSheet = true
-        this.$store.commit('sendMessage', { text: 'updating idol data' })
-        this.message = 'pending'
-        const { data } = await this.$axios.post("/my-mltd", {
-          version: serverVer,
-          localLength
-        },
-          {
-            onDownloadProgress (e) {
-              _this.message = 'downloading'
-              _this.progress = Math.floor(e.loaded / e.total * 100)
-            }
-          })
-        await db.transaction("rw", db.idols, db.dataver, function () {
-          db.idols.bulkPut(data)
-          db.dataver.put({ ver: 'current', currentVersion: serverVer })
-        })
-        this.$store.commit('sendMessage', { text: 'update success' })
-        this.$store.dispatch('submit', [])
+        this.serverVer = serverVer
+        this.localLength = await db.idols.count()
+        this.updateDialog = true
       } else {
         this.$store.commit('sendMessage', { text: 'idol data is new' })
       }
+      sessionStorage.setItem('updated', '1')
+    },
+    async getCards () {
+      let _this = this
+      let serverVer = this.serverVer
+      let localLength = this.localLength
+      if (localLength > 100) localLength += 100;
+      //fix serverless proxy,now skip most of the local data and always update the rank5 cards,hope it work
+      this.bottomSheet = true
+      this.updateDialog = false
+      this.$store.commit('sendMessage', { text: 'updating idol data' })
+      this.message = 'pending'
+      const { data } = await this.$axios.post("/my-mltd", {
+        version: serverVer,
+        localLength
+      },
+        {
+          onDownloadProgress (e) {
+            _this.message = 'downloading'
+            _this.progress = Math.floor(e.loaded / e.total * 100)
+          }
+        })
+      await db.transaction("rw", db.idols, db.dataver, function () {
+        db.idols.bulkPut(data)
+        db.dataver.put({ ver: 'current', currentVersion: serverVer })
+      })
+      this.$store.commit('sendMessage', { text: 'update success' })
+      this.$store.dispatch('submit', [])
       this.bottomSheet = false
+    },
+    dismissUpdate(){
+      this.updateDialog = false
+      sessionStorage.setItem('dismissUpdate','1')
     }
   },
-  mounted(){
-    this.getCards()
+  mounted () {
+    this.checkCards()
   }
 }
 </script>
