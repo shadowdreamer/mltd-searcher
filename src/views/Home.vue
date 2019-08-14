@@ -55,9 +55,8 @@ export default {
     async getCards () {
       let _this = this
       let localLength = await db.idols.count()
-      if (localLength > 100) localLength = 100; //just skip N and some R
-      // it will skip rank5 custom update, not a good way to slim the online data
-      // if (localLength > 100) localLength += 100;
+      if (localLength > 100) localLength += 100;
+      //fix serverless proxy,now skip most of the local data and always update the rank5 cards,hope it work
       let serverVer = await this.checkVersion()
       if (serverVer) {
         this.bottomSheet = true
