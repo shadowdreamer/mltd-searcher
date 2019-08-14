@@ -68,6 +68,7 @@ export default {
       } else if (current.currentVersion != serverVer) {
         return serverVer
       } else {
+        this.$store.commit('sendMessage', { text: 'idol data is new' })
         return false
       }
     },
@@ -77,8 +78,6 @@ export default {
         this.serverVer = serverVer
         this.localLength = await db.idols.count()
         this.updateDialog = true
-      } else {
-        this.$store.commit('sendMessage', { text: 'idol data is new' })
       }
       sessionStorage.setItem('updated', '1')
     },
