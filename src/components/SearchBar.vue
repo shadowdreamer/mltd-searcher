@@ -14,7 +14,7 @@
     @focus="$emit('searchfocus')"
   >
     <template v-slot:append>
-      <v-btn icon small @click.self="model=[];">
+      <v-btn icon small @click="model=[]">
         <v-icon>clear_all</v-icon>
       </v-btn>
     </template>

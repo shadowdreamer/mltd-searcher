@@ -51,7 +51,7 @@
                 >
                   <template v-slot:placeholder>
                     <v-layout fill-height align-center justify-center ma-0>
-                      <v-progress-circular size="50" indeterminate color="primary"></v-progress-circular>
+                      <v-progress-circular size="50" indeterminate color="grey lighten-2"></v-progress-circular>
                     </v-layout>
                   </template>
                 </v-img>

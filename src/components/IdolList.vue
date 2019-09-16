@@ -16,7 +16,7 @@
             <v-img :src="`/storage/icon_l/${item.resourceId}_1.png`">
                  <template v-slot:placeholder>
                   <v-layout fill-height align-center justify-center ma-0>
-                    <v-progress-circular  indeterminate color="primary"></v-progress-circular>
+                    <v-progress-circular  indeterminate color="grey lighten-2"></v-progress-circular>
                   </v-layout>
                 </template>
             </v-img>
