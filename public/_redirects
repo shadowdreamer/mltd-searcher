@@ -1,7 +1,7 @@
 /mltd/*  https://api.matsurihi.me/mltd/v1/:splat 200
 /storage/* https://storage.matsurihi.me/mltd/:splat 301
 /my-mltd  https://mltd-api.dovahkiin.top/.netlify/functions/server 200
-/news-mltd https://webview-dot-theaterdays.appspot.com/api/info 200
+/news-mltd https://webview-dot-theaterdays.appspot.com/api/info 301
 /news-img/* https://storage.googleapis.com/image-theaterdays/:splat 301
 /*  /index.html 200
 
