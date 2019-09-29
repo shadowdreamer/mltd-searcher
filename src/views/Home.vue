@@ -91,7 +91,7 @@ export default {
       this.updateDialog = false
       this.$store.commit('sendMessage', { text: 'updating idol data' })
       this.message = 'pending'
-      const { data } = await this.$axios.post("/my-mltd", {
+      const { data } = await this.$axios.post("https://mltd-api.dovahkiin.top/.netlify/functions/server", {
         version: serverVer,
         localLength
       },
