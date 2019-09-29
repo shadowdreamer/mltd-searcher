@@ -74,7 +74,7 @@ export default {
     async loadNews () {
       this.loading = true
       try {
-        const { data } = await axios(`/my-mltd/news?cursor=${this.cursor}`)
+        const { data } = await axios(`https://mltd-api.dovahkiin.top/.netlify/functions/server/news?cursor=${this.cursor}`)
         this.announce_list = this.announce_list.concat(data.announce_list)
         this.cursor = data.cursor
         this.loading = false
