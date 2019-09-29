@@ -2,7 +2,8 @@
   <v-container>
     <v-layout row wrap>
       <v-flex xs12 md6 class="pa-1" v-for="item in announce_list" :key="item.id">
-        <v-card>
+        <v-hover v-slot:default="{ hover }">
+        <v-card :elevation="hover ? 12 : 2">
           <v-card-text class="py-0" v-ripple @click.stop="checking=item">
             <v-layout row wrap>
               <v-flex v-if="item.title_image_url" xs4 class="py-2">
@@ -14,6 +15,7 @@
             </v-layout>
           </v-card-text>
         </v-card>
+        </v-hover>
       </v-flex>
       <v-flex xs12>
         <v-alert v-if="fail" type="error">Fail in loading game news,please retry later.</v-alert>
@@ -34,7 +36,7 @@
         <div style="height:60px;"></div>
       </v-flex>
     </v-layout>
-    <v-dialog :value="!!checking" scrollable persistent :overlay="true" max-width="600px">
+    <v-dialog :value="!!checking" scrollable persistent :overlay="true" max-width="600px" @keydown.esc="checking=null">
       <v-card v-if="!!checking">
         <v-img
           class="white--text"
