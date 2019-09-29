@@ -74,7 +74,7 @@ export default {
     async loadNews () {
       this.loading = true
       try {
-        const { data } = await axios(`news-mltd?type=3&cursor=${this.cursor}&platform=google`)
+        const { data } = await axios(`/my-mltd/news?cursor=${this.cursor}`)
         this.announce_list = this.announce_list.concat(data.announce_list)
         this.cursor = data.cursor
         this.loading = false
