@@ -58,7 +58,7 @@ export default {
       if (!!sessionStorage.getItem('updated') || !!sessionStorage.getItem('dismissUpdate')) return
       this.checking = true
       this.$store.commit('sendMessage', { text: 'checking idols data for search' })
-      const serverVer = (await this.$axios("/mltd/version/latest")).data.res.updateTime
+      const serverVer = (await this.$axios("https://mltd.dovahkiin.top/mltd/version/latest")).data.res.updateTime
       console.log(serverVer)
       let current = await db.dataver.get({ ver: 'current' })
       console.log(current)

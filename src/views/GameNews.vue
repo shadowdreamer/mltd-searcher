@@ -89,13 +89,13 @@ export default {
     htmlModify(str){
       str = str.replace(/browser:/g,'')
       str = str.replace(/_self/g,'_blank')
-      str = str.replace(/<img src="([^"]*)"[^>]*>/g,function(match,p1){return `<img src="news-img/edi/${p1.split('/').pop()}" style="width:100%"/>`})
+      str = str.replace(/<img src="([^"]*)"[^>]*>/g,function(match,p1){return `<img src="https://mltd.dovahkiin.top/news-img/edi/${p1.split('/').pop()}" style="width:100%"/>`})
       return str
     }
   },
   filters: {
     imgProxy (url) {
-      return 'news-img/' + url.split('/').pop()
+      return 'https://mltd.dovahkiin.top/news-img/' + url.split('/').pop()
     },
   },
   mounted () {

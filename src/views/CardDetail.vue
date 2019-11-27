@@ -5,8 +5,8 @@
         <v-carousel cycle :height="carouselHeight" hide-delimiter-background>
           <v-carousel-item
             v-for="item in [
-        `/storage/card_bg/${idol.resourceId}_0.png`,
-        `/storage/card_bg/${idol.resourceId}_1.png`
+        `https://mltd.dovahkiin.top/storage/card_bg/${idol.resourceId}_0.png`,
+        `https://mltd.dovahkiin.top/storage/card_bg/${idol.resourceId}_1.png`
         ]"
             :key="item"
           >
@@ -46,8 +46,8 @@
             <v-flex xs4 md3>
               <v-card flat class="px-3">
                 <v-img
-                  @click="checkImg(`/storage/card/${idol.resourceId}_${i}_b.png`)"
-                  :src="`/storage/card/${idol.resourceId}_${i}_a.png`"
+                  @click="checkImg(`https://mltd.dovahkiin.top/storage/card/${idol.resourceId}_${i}_b.png`)"
+                  :src="`https://mltd.dovahkiin.top/storage/card/${idol.resourceId}_${i}_a.png`"
                 >
                   <template v-slot:placeholder>
                     <v-layout fill-height align-center justify-center ma-0>
@@ -157,7 +157,7 @@
                   <v-flex xs4 md3 class="pr-3">
                     <v-img
                       :aspect-ratio="0.716"
-                      :src="`/storage/costume_icon_ll/${item.resourceId}.png`"
+                      :src="`https://mltd.dovahkiin.top/storage/costume_icon_ll/${item.resourceId}.png`"
                     >
                       <template v-slot:placeholder>
                         <v-layout fill-height align-center justify-center ma-0>
@@ -187,7 +187,7 @@
             <template v-for="item in sameIdol">
               <v-list-item :key="item.id+item.rarity" @click="$router.push({path:`/card/${item.id}`})">
                 <v-list-item-avatar tile>
-                  <v-img :src="`/storage/icon_l/${item.resourceId}_1.png`">
+                  <v-img :src="`https://mltd.dovahkiin.top/storage/icon_l/${item.resourceId}_1.png`">
                     <template v-slot:placeholder>
                       <v-layout fill-height align-center justify-center ma-0>
                         <v-progress-circular indeterminate color="primary"></v-progress-circular>
@@ -289,7 +289,7 @@ export default {
         .toArray()
       if(sameIdol.length === 0){
         this.loadingSame = true
-        let  { data } = await this.$axios(`/mltd/cards?idolId=${idolId}`)
+        let  { data } = await this.$axios(`https://mltd.dovahkiin.top/mltd/cards?idolId=${idolId}`)
         sameIdol = data.filter((el,index,arr)=>el.id!== id)
         this.loadingSame = false
       }
@@ -303,7 +303,7 @@ export default {
         let data = null;
         if (!localData) {
           this.loading = true
-          data = (await this.$axios(`/mltd/cards/${this.routeId}`)).data
+          data = (await this.$axios(`https://mltd.dovahkiin.top/mltd/cards/${this.routeId}`)).data
         }
         let idol = localData || data[0]
         console.log(idol)
