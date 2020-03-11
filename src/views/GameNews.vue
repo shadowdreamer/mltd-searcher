@@ -1,5 +1,19 @@
 <template>
   <v-container>
+    <v-flex xs12 class="text-right mb-3">
+      <v-btn-toggle v-model="type" tile color="primary" group >
+        <v-btn value="news" small>
+          News
+        </v-btn>
+        <v-btn value="events" small>
+          Events
+        </v-btn>
+        <v-btn value="features" small>
+          Features
+        </v-btn>
+      </v-btn-toggle>      
+    </v-flex>
+
     <v-layout row wrap>
       <v-flex xs12 md6 class="pa-1" v-for="item in announce_list" :key="item.id">
         <v-hover v-slot:default="{ hover }">
@@ -26,7 +40,7 @@
             large
             :disabled="loading"
             :loading="loading"
-            @click="loadNews"
+            @click="loadNews(type)"
             v-show="!!cursor || loading"
           >
             load more
@@ -70,13 +84,22 @@ export default {
     cursor: '',
     loading: false,
     checking: null,
-    fail: false
+    fail: false,
+    type:'news'
   }),
+  watch:{
+    type(val){
+      this.announce_list = []
+      this.cursor = ''
+      this.loading = true
+      this.loadNews(val)
+    }
+  },
   methods: {
-    async loadNews () {
+    async loadNews (type = 'news') {
       this.loading = true
       try {
-        const { data } = await axios(`https://mltd-api.dovahkiin.top/.netlify/functions/server/news?cursor=${this.cursor}`)
+        const { data } = await axios(`https://mltd-api.dovahkiin.top/.netlify/functions/server/${type}?cursor=${this.cursor}`)
         this.announce_list = this.announce_list.concat(data.announce_list)
         this.cursor = data.cursor
         this.loading = false
