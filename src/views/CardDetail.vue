@@ -69,35 +69,15 @@
             <v-flex xs12 md6>
               <v-card flat class="pl-3">
                 <v-layout row wrap>
-                  <v-flex xs4 class="pl-2">
+                  <v-flex xs12 class="pl-2">
                     <StatusPanel
-                      :rows="[
-                    {type:'dance',val:idol['danceMax'+awake]},
-                    {type:'visual',val:idol['visualMax'+awake]},
-                    {type:'vocal',val:idol['vocalMax'+awake]}
+                      :data="[
+                    {name:'dance',value:idol['danceMax'+awake]},
+                    {name:'visual',value:idol['visualMax'+awake]},
+                    {name:'vocal',value:idol['vocalMax'+awake]}
                     ]"
                     />
-                  </v-flex>
-                  <v-flex xs8class="pl-3">
-                    <v-card-text>
-                      <p>
-                        <span class="status-label">levelMax</span>
-                        {{idol['levelMax'+awake]}}
-                      </p>
-                      <p>
-                        <span class="status-label" style="background-color:#8fd9fd">DANCE</span>
-                        {{idol['danceMax'+awake]}}
-                      </p>
-                      <p>
-                        <span class="status-label" style="background-color:#ff9933">VISUAL</span>
-                        {{idol['visualMax'+awake]}}
-                      </p>
-                      <p>
-                        <span class="status-label" style="background-color:#ff7266">VOCAL</span>
-                        {{idol['vocalMax'+awake]}}
-                      </p>
-                    </v-card-text>
-                  </v-flex>
+                  </v-flex>                   
                 </v-layout>
               </v-card>
             </v-flex>

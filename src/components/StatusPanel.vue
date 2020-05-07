@@ -1,43 +1,50 @@
 <template>
   <div>
-    <ve-pie  
-    height="160px"
-    width="130px"
-    :judge-width="true" 
-    :data="{
-        columns: ['type', 'val'],
-        rows
-      }" 
-    :colors="colors" 
-    :settings="chartSettings"
-    :tooltip-visible="false"
-    :legend-visible="false"
-    ></ve-pie>
+    <div style="height:140px" ref="myChart"></div>
   </div>
-  <!-- <ve-pie :data="chartData"></ve-pie> -->
 </template>
 
-<script>
-import VePie from 'v-charts/lib/pie.common'
-export default {
-  components: { VePie },
+<script> 
+const echarts = require('echarts/lib/echarts');
+require("echarts/lib/component/legend");
+require("echarts/lib/chart/pie");
+export default { 
   props:{
-    rows:Array
+    data:Array
   },
   data: () => ({
       colors:['#8fd9fd','#ff9933','#ff7266'],
-      chartSettings:{
-        hoverAnimation:false,
-        labelLine:{
-          show:false,
-        },
-        label:{
-          show:false
-        },
-        radius: 56,
-        offsetY: 90,
-        offserX:50
-      }
-    })
+  }),
+  mounted(){
+    const chart = echarts.init(this.$refs.myChart)
+    chart.setOption({
+      color:['#8fd9fd','#ff9933','#ff7266'],
+      legend: {
+					orient: 'vertical',
+					x: '50%',
+					y: '15%',
+					itemWidth: 15,
+					itemHeight: 15,
+          formatter:name=>{
+            let v = this.data.filter(el=>el.name === name)[0]
+            return `${name}:${v && v.value}`
+          }
+			},
+      series: [
+					{
+						type: 'pie',
+						radius: ['50%', '75%'],
+						center: ['25%', '45%'],
+						label: {
+							normal: {
+								show: false, 
+							}, 
+						}, 
+            data:this.data
+					}
+				]
+    });
+  }
+  
 }
 </script>

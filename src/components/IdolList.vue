@@ -11,7 +11,7 @@
       key-field="id"
     >
       <template v-slot="{item}">
-        <v-list-item  @click.stop="checkCard(item)">
+        <v-list-item  :ripple="false"  @click.stop="checkCard(item)">
           <v-list-item-avatar tile >
             <v-img :src="`https://mltd.dovahkiin.top/storage/icon_l/${item.resourceId}_1.png`">
                  <template v-slot:placeholder>
