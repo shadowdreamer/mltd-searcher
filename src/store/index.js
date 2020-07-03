@@ -32,6 +32,7 @@ export default new Vuex.Store({
                 { text: 'Fes', type: 'extraType', val: 4, color: 'pink darken-1' },
                 { text: '1st', type: 'extraType', val: 5, color: 'indigo darken-1' },
                 { text: '2nd', type: 'extraType', val: 7, color: 'indigo darken-1' },
+                { text: '3rd', type: 'extraType', val: 10, color: 'indigo darken-1' },
             ],
             customTag: [
                 { text: '制服', type: 'custom', val: '制服', color: 'red darken-2' },
@@ -114,8 +115,8 @@ export default new Vuex.Store({
                     list.push(idolType.includes(idol.idolType)) : '';
                 (!!extraType && first != 'extraType') ?
                     list.push(extraType.includes(idol.extraType)) : '';
-                if ([5, 7].includes(idol.extraType)) {
-                    list.push(extraType ? extraType.includes(5) || extraType.includes(7) : false)
+                if ([5, 7,10].includes(idol.extraType)) {
+                    list.push(extraType ? ( extraType.includes(5) || extraType.includes(7) || extraType.includes(10)) : false)
                 }
                 if(rank5){
                     list.push(!!idol.rank5Costume)

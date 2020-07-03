@@ -40,5 +40,6 @@ module.exports = {
     }
   },
   transpileDependencies: ['vuetify'],
-  productionSourceMap: false
+  productionSourceMap: false,
+  publicPath:"./"
 }
