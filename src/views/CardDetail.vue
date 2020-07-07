@@ -246,6 +246,7 @@ export default {
   },
   methods: {
     pnameModify (text) {
+      if(!text)return ""
       let pname = localStorage.getItem('pname') || 'プロデューサー'
       return text.replace(/{\$P\$}/g, pname).replace(/\n/g, '<br/>')
     },
