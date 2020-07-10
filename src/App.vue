@@ -40,7 +40,9 @@
     <v-content>
       <v-layout justify-center>
         <v-flex xs12 md8>
-          <router-view></router-view>
+          <keep-alive :include="['home','gamenews','lounge']">
+            <router-view></router-view>
+          </keep-alive>
         </v-flex>
       </v-layout>
       <SnackBar />      
