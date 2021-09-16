@@ -30,9 +30,11 @@ export default new Vuex.Store({
                 { text: 'PST Rank', type: 'extraType', val: 2, color: 'amber darken-2' },
                 { text: 'PST Point', type: 'extraType', val: 3, color: 'amber' },
                 { text: 'Fes', type: 'extraType', val: 4, color: 'pink darken-1' },
+                { text: 'SHS', type: 'extraType', val: 14, color: 'amber lighten-1' },
                 { text: '1st', type: 'extraType', val: 5, color: 'indigo darken-1' },
                 { text: '2nd', type: 'extraType', val: 7, color: 'indigo darken-1' },
                 { text: '3rd', type: 'extraType', val: 10, color: 'indigo darken-1' },
+                { text: '4th', type: 'extraType', val: 13, color: 'indigo darken-1' },
             ],
             customTag: [
                 { text: '制服', type: 'custom', val: '制服', color: 'red darken-2' },
